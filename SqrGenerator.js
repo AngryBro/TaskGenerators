@@ -1,9 +1,5 @@
-function Print(data) {
-	document.getElementById("output").innerHTML = data;
-}
-
 function RandomInterval(max) {
-		var inf = Math.round(6*Math.random());
+		var inf = Math.round(5*Math.random());
 		if(inf == 0) {
 			return new Interval(
 			0 ,
@@ -12,7 +8,7 @@ function RandomInterval(max) {
 			Math.round(Math.random()));
 			
 		}
-		if(inf == 6) {
+		if(inf == 5) {
 			return new Interval(
 			Math.round(Math.random()) ,
 			Math.round(2*max*Math.random())-max,
@@ -59,6 +55,9 @@ class Interval {
 }
 
 function Generate(count) {
+	count = Math.round(count);
+	console.log(Number.isInteger(count));
+	if((Number.isInteger(count))&&(count>0)) {
 	var max = 10;
 	var tasks = [];
 	var temp;
@@ -88,8 +87,8 @@ function Generate(count) {
 	signs.push(' = ');
 	var type;
 	var polynom = "\\[a x^2 + b x + c";
-	var maintask = "Найдите все значения параметра $a$, при каждом из которых "
-	var cmd = "\\begin{enumerate} ";
+	var maintask = "Найдите все значения параметров $a,b,c$, при каждом из которых "
+	var cmd = "\\documentclass[14pt,a4paper]{extarticle} \\usepackage{math} \\everymath{\\displaystyle} \\usepackage[russian]{babel} \\begin{document} \\righthyphenmin=100 \\begin{enumerate} ";
 	for(var i = 0; i<count; i++) {
 		var randtask = Math.round((tasks.length-1)*Math.random());
 		var randsign;
@@ -113,6 +112,7 @@ function Generate(count) {
 		cmd += ". ";
 		
 	}
-	cmd += "\\end{enumerate}";
-	Print(cmd);
+	cmd += "\\end{enumerate} \\end{document}";
+	document.getElementById("output").value = cmd;
+	}
 }
