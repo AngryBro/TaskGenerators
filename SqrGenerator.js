@@ -56,7 +56,6 @@ class Interval {
 
 function Generate(count) {
 	count = Math.round(count);
-	console.log(Number.isInteger(count));
 	if((Number.isInteger(count))&&(count>0)) {
 	var max = 10;
 	var tasks = [];
