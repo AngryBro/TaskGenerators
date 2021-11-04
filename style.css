@@ -1,0 +1,28 @@
+a {
+    text-decoration: none;
+    color: black;
+    }
+a:hover {
+    color: blue;
+    }
+text {
+	font-size: 50;
+}
+button {
+	font-size: 50;
+}
+input {
+	font-size: 50
+}
+h3 {
+	font-size: 60
+}
+h1 {
+	font-size: 80
+}
+li {
+	font-size: 50
+}
+.latexcode {
+	font-size: 20
+}
