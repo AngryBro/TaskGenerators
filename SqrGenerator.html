@@ -2,17 +2,17 @@
 	<head>
 		<title>Генератор задач</title>
 		<script charset="utf-8" src="SqrGenerator.js"></script>
+		<link rel="stylesheet" href="style.css"></link>
 	</head>
 	<body>
-	<h3>Генератор задач с параметром на идею квадратного трёхчлена</h3>
-		<text>Количество: </text>
-		<input id="input"></input><br>
+	<h3><a href="index.html">Генератор задач с параметром на идею квадратного трёхчлена</a></h3>
+		<text><b>Количество:</b> </text>
+		<input id="input" type="number"></input><br>
 		<button onclick="Generate(input.value)">СГЕНЕРИРОВАТЬ</button><br>
-		<text>Задачи:</text><br><br>
-		<text id="output"></text>
+		<text><b>Задачи:</b></text><br><br>
+		<textarea cols=100 rows=15 class="latexcode" id="output" readonly></textarea>
 		<script>
 			var input = document.getElementById('input');
-			
 		</script>
 		
 	</body>
