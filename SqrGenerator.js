@@ -115,4 +115,7 @@ function Generate(count) {
 	cmd += "\\end{enumerate} \\end{document}";
 	document.getElementById("output").value = cmd;
 	}
+	else {
+		document.getElementById("output").value="";
+	}
 }
