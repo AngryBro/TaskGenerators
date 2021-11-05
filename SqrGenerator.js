@@ -85,8 +85,8 @@ function Generate(count) {
 	signs.push(' \\leq ');
 	signs.push(' = ');
 	var type;
+	var bonus;
 	var polynom = "\\[a x^2 + b x + c";
-	var maintask = "Найдите все значения параметров $a,b,c$, при каждом из которых "
 	var cmd = "\\documentclass[14pt,a4paper]{extarticle} \\usepackage{math} \\everymath{\\displaystyle} \\usepackage[russian]{babel} \\begin{document} \\righthyphenmin=100 \\begin{enumerate} ";
 	for(var i = 0; i<count; i++) {
 		var randtask = Math.round((tasks.length-1)*Math.random());
@@ -94,11 +94,21 @@ function Generate(count) {
 		if(randtask<6) {
 			randsign = signs[4];
 			type = "уравнение ";
+			bonus = "\\neq 0";
 		}
 		else {
 			randsign = signs[Math.round(3*Math.random())];
 			type = "неравенство ";
+			var flag = Math.round(Math.random());
+			if(flag == 0) {
+				bonus = "< 0";
+			}
+			else {
+				bonus = "> 0";
+			}
 		}
+		var maintask = "Найдите все значения параметров $a " + bonus;
+		maintask += ",b,c$, при каждом из которых ";
 		var interval = RandomInterval(max);
 		cmd += "\\item ";
 		cmd += maintask;
