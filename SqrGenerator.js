@@ -56,7 +56,7 @@ class Interval {
 
 function Generate(count) {
 	count = Math.round(count);
-	if((Number.isInteger(count))&&(count>0)) {
+	if(count>0) {
 	var max = 10;
 	var tasks = [];
 	var temp;
@@ -86,8 +86,14 @@ function Generate(count) {
 	signs.push(' = ');
 	var type;
 	var bonus;
-	var polynom = "\\[a x^2 + b x + c";
-	var cmd = "\\documentclass[14pt,a4paper]{extarticle} \\usepackage{math} \\everymath{\\displaystyle} \\usepackage[russian]{babel} \\begin{document} \\righthyphenmin=100 \\begin{enumerate} ";
+	var polynom = "	\\[a x^2 + b x + c";
+	var cmd = `\\documentclass[14pt,a4paper]{extarticle}
+\\usepackage{math}
+\\everymath{\\displaystyle}
+\\usepackage[russian]{babel}
+\\begin{document}
+\\righthyphenmin=100
+\\begin{enumerate}`;
 	for(var i = 0; i<count; i++) {
 		var randtask = Math.round((tasks.length-1)*Math.random());
 		var randsign;
@@ -110,18 +116,20 @@ function Generate(count) {
 		var maintask = "Найдите все значения параметров $a " + bonus;
 		maintask += ",b,c$, при каждом из которых ";
 		var interval = RandomInterval(max);
-		cmd += "\\item ";
+		cmd += "\n  \\item ";
 		cmd += maintask;
 		cmd += type;
+		cmd += " \n ";
 		cmd += polynom;
 		cmd += randsign;
-		cmd += "0 \\] ";
+		cmd += "0 \\] \n ";
+		cmd += "	";
 		cmd += tasks[randtask];
 		cmd += interval.Out();
 		cmd += ". ";
 		
 	}
-	cmd += "\\end{enumerate} \\end{document}";
+	cmd += "\n\\end{enumerate}\n\\end{document}";
 	document.getElementById("output").value = cmd;
 	}
 	else {

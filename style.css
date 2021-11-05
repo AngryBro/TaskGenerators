@@ -26,3 +26,6 @@ li {
 .latexcode {
 	font-size: 20
 }
+ul li {
+	margin: 30 20
+}

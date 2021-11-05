@@ -1,0 +1,22 @@
+<html lang="ru">
+	<head>
+		<title>Генератор задач</title>
+		<script charset="utf-8" src="VietGenerator.js"></script>
+		<link rel="stylesheet" href="style.css"></link>
+	</head>
+	<body>
+	<h3><a href="index.html">Генератор квадратных уравнений с целыми корнями</a></h3>
+		<text><b>Количество:</b> </text>
+		<input id="input" type="number"></input><br>
+		<text><b>Максимальный корень:</b></text>
+		<input id="max" type="number"></input><br>
+		<button onclick="Generate(input.value,max.value)">СГЕНЕРИРОВАТЬ</button><br>
+		<text><b>Задачи:</b></text><br><br>
+		<textarea cols=100 rows=15 class="latexcode" id="output" readonly></textarea>
+		<script>
+			//var input = document.getElementById('input');
+			//var max = document.getElementById('max');
+		</script>
+		
+	</body>
+</html>
