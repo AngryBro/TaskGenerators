@@ -97,6 +97,7 @@ function Generate(count) {
 	for(var i = 0; i<count; i++) {
 		var randtask = Math.round((tasks.length-1)*Math.random());
 		var randsign;
+		var interval = RandomInterval(max);
 		if(randtask<6) {
 			randsign = signs[4];
 			type = "уравнение ";
@@ -106,16 +107,20 @@ function Generate(count) {
 			randsign = signs[Math.round(3*Math.random())];
 			type = "неравенство ";
 			var flag = Math.round(Math.random());
-			if(flag == 0) {
-				bonus = "< 0";
+			if((interval.end == "+ \\infty")||(interval.begin == "- \\infty")) {
+				bonus = "\\neq 0";
 			}
 			else {
-				bonus = "> 0";
+				if(flag==0) {
+					bonus = "< 0";
+				}
+				else {
+					bonus = "> 0";
+				}
 			}
 		}
 		var maintask = "Найдите все значения параметров $a " + bonus;
 		maintask += ",b,c$, при каждом из которых ";
-		var interval = RandomInterval(max);
 		cmd += "\n  \\item ";
 		cmd += maintask;
 		cmd += type;

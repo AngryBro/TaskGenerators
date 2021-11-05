@@ -25,7 +25,11 @@ function Already(set,element) {
 function Generate(count,max) {
 	count = Math.round(count);
 	max = Math.round(max);
-	if((count>0)&&(max>0)) {
+	if(count>=2*max*max-max) {
+		document.getElementById('output').value = `Слишком маленькие корни или слишком большое количество`;
+	}
+	else {
+	if((count>0)&&(max>0)&&(count<2*max*max-max)) {
     var solutions = [];
     var temp;
     var x1;
@@ -79,5 +83,6 @@ function Generate(count,max) {
 	}
     else {
 		document.getElementById('output').value = "";
+	}
 	}
 }
