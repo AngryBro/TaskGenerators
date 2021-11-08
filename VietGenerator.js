@@ -14,6 +14,10 @@ function Equal(s1,s2) {
     }
 }
 function Already(set,element) {
+	if( (element.x1==0)||(element.x2==0)
+        ||(element.x1+element.x2==0) ) {
+            return true;
+        }
     for(var i = 0; i<set.length; i++) {
         if( (Equal(element,set[i]))||(element.x1==0)||(element.x2==0)
         ||(element.x1+element.x2==0) ) {
@@ -35,6 +39,7 @@ function Generate(count,max) {
     var x1;
     var x2;
     var latex;
+	var mathjax;
     var b;
     var c;
     for(var i = 0; i<count; i++) {
@@ -55,13 +60,17 @@ function Generate(count,max) {
 \\begin{document}
 \\righthyphenmin=100
 \\begin{enumerate}`;
+	mathjax = '<ol> \n';
     for(var i = 0; i<solutions.length; i++) {
         b = -solutions[i].x1-solutions[i].x2;
         c = solutions[i].x1 * solutions[i].x2;
+		mathjax += '<li style="font-size:30"> \\(';
         latex += "\n	\\item $";
         latex += "x^2";
+		mathjax += 'x^2';
         if(b>0) {
             latex+='+';
+			mathjax += '+';
         }
         if(b==1) {
             b = "";
@@ -70,19 +79,28 @@ function Generate(count,max) {
             b="-";
         }
         latex+= String(b);
+		mathjax += String(b);
         latex += 'x';
+		mathjax += 'x';
         if(c>0) {
             latex += "+";
+			mathjax += '+';
         }
 
         latex += String(c);
+		mathjax += String(c);
         latex += "=0 $ ";
+		mathjax += '=0 \\)</li> \n';
     }
     latex += "\n\\end{enumerate}\n\\end{document}";
+	mathjax += '</ol>';
 	document.getElementById('output').value = latex;
+	document.getElementById('preview').innerHTML = mathjax;
+	MathJax.typeset();
 	}
     else {
 		document.getElementById('output').value = "";
+		document.getElementById('preview').innerHTML = "";
 	}
 	}
 }
