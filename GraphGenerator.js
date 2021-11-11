@@ -494,7 +494,7 @@ function Generate(count) {
 		var gxyTEX = RandomGraph(10,"tex");
 		var gxyJAX = RandomGraph(10,"jax");
 		latex += ("\n\nКод $\\operatorname{G}{(x,~y)}$ для \\href{https://www.desmos.com/calculator?lang=ru}{desmos.com} :\n\n \\tiny"+gxyTEX+"\\normalsize");
-		jax += "<br>Код \\(\\operatorname{G}{(x,~y)}\\) для <a target='blank_' href='https://www.desmos.com/calculator?lang=ru'>desmos.com</a> : ";
+		jax += "<br>Код \\(\\operatorname{G}{(x,~y)}\\) для <a target='_blank' href='https://www.desmos.com/calculator?lang=ru'>desmos.com</a> : ";
 		jax += ("<textarea class='latexcode' readonly>"+gxyJAX+"</textarea>");
 		jax += "</li>"
 	}
