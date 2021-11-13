@@ -1,4 +1,4 @@
-class Graphs {
+class Graphs1 {
 	constructor() {
 		this.p = 0;
 		this.h = 1;
@@ -12,10 +12,10 @@ class Graphs {
 		var y0;
 		var part1;
 		var part2;
-		x0 = Math.round(1000*max*Math.random())/1000;
-		y0 = Math.round(1000*max*Math.random())/1000;
-		a = Math.round(1000*max*Math.random()-500*max)/1000;
-		b = Math.round(1000*max*Math.random()-500*max)/1000;
+		x0 = Math.round(max*Math.random());
+		y0 = Math.round(max*Math.random());
+		a = Math.round(max*Math.random()-max/2);
+		b = Math.round(max*Math.random()-max/2);
 		if((sqr==1)||(sqr==4)) {
 			part1 = "("+String(a)+"*(x-"+String(x0)+")+";
 		}
@@ -36,9 +36,9 @@ class Graphs {
 		var r;
 		var part1;
 		var part2;
-		x0 = Math.round(1000*max*Math.random())/1000;
-		y0 = Math.round(1000*max*Math.random())/1000;
-		r = Math.round(1000*max*Math.random()*max)/1000;
+		x0 = Math.round(max*Math.random());
+		y0 = Math.round(max*Math.random());
+		r = Math.round(max*Math.random()*max);
 		if((sqr==1)||(sqr==4)) {
 			if(compiler=="tex") {
 				part1 = "((x-"+String(x0)+")\\textasciicircum 2+";
@@ -77,9 +77,9 @@ class Graphs {
 		var x0;
 		var y0;
 		var k;
-		k = Math.round(max*(2*(sqr%2)-1)*1000*Math.random())/1000;
-		x0 = Math.round(1000*2*Math.random()-1000)/1000;
-		y0 = Math.round(1000*2*Math.random()-1000)/1000;
+		k = Math.round(max*(2*(sqr%2)-1)*Math.random());
+		x0 = Math.round(max*2*Math.random()-max);
+		y0 = Math.round(max*2*Math.random()-max);
 		return "("+String(k)+"/(x-("+String(x0)+"))+("+String(y0)+")-y)";
 	}
 	Parabole(max,sqr,compiler) {
@@ -89,10 +89,10 @@ class Graphs {
 		var part1;
 		var part2;
 		while(a==0) {
-			a = Math.round(10000*Math.random()-5000)/1000;
+			a = Math.round(max*Math.random()-max/2);
 		}
-		x0 = Math.round(1000*max*Math.random())/1000;
-		y0 = Math.round(1000*max*Math.random())/1000;
+		x0 = Math.round(max*Math.random());
+		y0 = Math.round(max*Math.random());
 		if((sqr==1)||(sqr==4)) {
 			if(compiler=="tex") {
 				part1 = "("+String(a)+"*(x-"+String(x0)+")\\textasciicircum 2";
@@ -134,6 +134,141 @@ class Graphs {
 		return 0;
 	}
 }
+class Graphs {
+	constructor() {
+		this.p = 0;
+		this.h = 1;
+		this.l = 2;
+		this.c = 3;
+		this.a = 4;
+		this.count = 4;
+	}
+	Line(max) {
+		var a;
+		var b;
+		var x0;
+		var y0;
+		var part1;
+		var part2;
+		x0 = Math.round(max*2*Math.random()-max);
+		y0 = Math.round(max*2*Math.random()-max);
+		a=0;
+		b=0;
+		while((a==0)&&(b==0)||(Math.abs(a)==1)||(Math.abs(b)==1)) {
+			a = Math.round(max*Math.random()-max/2);
+			b = Math.round(max*Math.random()-max/2);
+		}
+		var part1;
+		var part2;
+		if(a==0) {
+			part1="";
+			part2 = String(b)+"(y"+Write(y0)+")=0";
+		}
+		if(b==0) {
+			part2 = "";
+			part1 = String(a)+"(x"+Write(x0)+")=0"
+		}
+		if(a*b!=0) {
+			part1 = String(a)+"(x"+Write(x0)+")";
+			part2 = Write(b)+"(y"+Write(y0)+")=0";
+		}
+		return part1+part2;
+	}
+	Circle(max) {
+		var x0;
+		var y0;
+		var r;
+		var part1;
+		var part2;
+		x0 = Math.round(max*2*Math.random()-max);
+		y0 = Math.round(max*2*Math.random()-max);
+		r = Math.round(max*Math.random()*max-2);
+		return "(x"+Write(x0)+")^2+(y"+Write(y0)+")^2="+String(r);
+	}
+	Hyperbole(max) {
+		var x0;
+		var y0;
+		var k = 0;
+		while(k==0) {
+			k = Math.round(max*Math.random()-max/2);
+		}
+		x0 = Math.round(max*2*Math.random()-max);
+		y0 = Math.round(max*2*Math.random()-max);
+		y0 = Math.round(max*2*Math.random()-max);
+		if(y0 == 0) {
+			y0 = "";
+		}
+		else {
+			y0 = Write(y0);
+		}
+		return "\\displaystyle y=\\frac{"+String(k)+"}{x"+Write(x0)+"}"+y0;
+	}
+	Parabole(max) {
+		var x0;
+		var y0;
+		var a = 0;
+		while(a==0) {
+			a = Math.round(max*Math.random()-max/2);
+		}
+		if(a==1) {
+			a = "";
+		}
+		if(a==-1) {
+			a = "-";
+		}
+		x0 = Math.round(max*2*Math.random()-max);
+		y0 = Math.round(max*2*Math.random()-max);
+		if(y0 == 0) {
+			y0 = "";
+		}
+		else {
+			y0 = Write(y0);
+		}
+		return "y="+String(a)+"(x"+Write(x0)+")^2"+y0;
+	}
+	Angle(max) {
+		var x0;
+		var y0;
+		var a = 0;
+		while(a==0) {
+			a = Math.round(max*Math.random()-max/2);
+		}
+		if(a==1) {
+			a = "";
+		}
+		if(a==-1) {
+			a = "-";
+		}
+		x0 = Math.round(max*2*Math.random()-max);
+		y0 = Math.round(max*2*Math.random()-max);
+		if(y0 == 0) {
+			y0 = "";
+		}
+		else {
+			y0 = Write(y0);
+		}
+		return "y="+String(a)+"|x"+Write(x0)+"|"+y0;
+	}
+	Random(max) {
+		var temp = Math.round(this.count*Math.random());
+		if(temp == this.p) {
+			return this.Parabole(max);
+		}
+		if(temp == this.h) {
+			return this.Hyperbole(max);
+		}
+		if(temp == this.c) {
+			return this.Circle(max);
+		}
+		if(temp == this.l) {
+			return this.Line(max);
+		}
+		if(temp == this.a) {
+			return this.Angle(max);
+		}
+		return 0;
+	}
+}
 var Graph = new Graphs();
 function Sign(x) {
 	if(x>0) {
@@ -144,17 +279,36 @@ function Sign(x) {
 	}
 	return 0;
 }
-function RandomGraph(max,compiler) {
-	// p - parabole, h - hyperbole, l - line, c - circle
-	var g = [];
-	for(var i = 0; i<4; i++) {
-		g.push(Graph.Random(max,i+1,compiler));
+function Write(x) {
+	if(x>=0) {
+		return "+"+String(x);
 	}
-	var part1 = "(x+abs(x))/(2x)*(y+abs(y))/(2y)*"+g[0];
-	var part2 = "+(x-abs(x))/(2x)*(y+abs(y))/(2y)*"+g[1];
-	var part3 = "+(x-abs(x))/(2x)*(y-abs(y))/(2y)*"+g[2];
-	var part4 = "+(x+abs(x))/(2x)*(y-abs(y))/(2y)*"+g[3];
-	return part1+part2+part3+part4+"=0";
+	else {
+		return "-"+String(-x);
+	}
+}
+function RandomGraph(max) {
+	// p - parabole, h - hyperbole, l - line, c - circle, a - angle
+	var g = [];
+	var graphcount = Math.round(Math.random())+2;
+	for(var i = 0; i<graphcount; i++) {
+		g.push(Graph.Random(max));
+	}
+	var temp = `\\left[
+			\\begin{array}{l}
+`;
+	for(var i = 0; i<graphcount-1; i++) {
+		temp += "				";
+		temp += g[i];
+		temp +=`\\\\
+`;
+	}
+	temp += "				";
+	temp += g[graphcount-1];
+	temp +=`
+			\\end{array}
+			\\right.`;
+	return temp;
 }
 
 function RandomParCorner(max) {
@@ -199,7 +353,7 @@ function RandomParCorner(max) {
 		sign1 = "";
 	}
 	else {
-		a = Math.round(max*Math.random()+1);
+		a = Math.round(max*Math.random()/2+1);
 		if(a == 1) {
 			a="";
 		}
@@ -324,7 +478,7 @@ function RandomParParabole(max) {
 		sign1 = "";
 	}
 	else {
-		a = Math.round(max*Math.random()+1);
+		a = Math.round(max*Math.random()/2+1);
 		if(a == 1) {
 			a="";
 		}
@@ -363,7 +517,7 @@ function RandomParLine(max) {
 	if((type >= 2)&&(type<=5)) {
 		var k = 0;
 		while(k==0) {
-			k = Math.round(max*2*Math.random()-max);
+			k = Math.round(max*Math.random()-max/2);
 		}
 		if(k==1) {
 			k = "";
@@ -417,6 +571,10 @@ function RandomParGraph(max) {
 }
 
 function Generate(count) {
+	if(count<1) {
+		document.getElementById('input').value = 1;
+		count = 1;
+	}
 	var task1 = "Найдите все значения параметра ";
 	var task2TEX = "$a$";
 	var task2JAX = "\\(a\\)";
@@ -431,7 +589,6 @@ function Generate(count) {
 \\usepackage{math}
 \\everymath{\\displaystyle}
 \\usepackage[russian]{babel}
-\\usepackage[unicode, pdftex]{hyperref}
 \\begin{document}
 \\righthyphenmin=100
 \\begin{enumerate}`;
@@ -481,9 +638,10 @@ function Generate(count) {
 		var temp = `
 	\\left\\{
 		\\begin{array}{l}
-			\\operatorname{G}{(x,~y)} \\\\ \n`+
-`			`+pargraph+"\n"+
-`		\\end{array}
+			`+RandomGraph(10)+`\\\\`+
+`
+				`+pargraph+`
+		\\end{array}
 	\\right.`;
 		latex += temp;
 		jax += temp;
@@ -491,22 +649,11 @@ function Generate(count) {
 		jax += "\\]<br>";
 		latex += task4;
 		jax += task4;
-		var gxyTEX = RandomGraph(10,"tex");
-		var gxyJAX = RandomGraph(10,"jax");
-		latex += ("\n\nКод $\\operatorname{G}{(x,~y)}$ для \\href{https://www.desmos.com/calculator?lang=ru}{desmos.com} :\n\n \\tiny"+gxyTEX+"\\normalsize");
-		jax += "<br>Код \\(\\operatorname{G}{(x,~y)}\\) для <a target='_blank' href='https://www.desmos.com/calculator?lang=ru'>desmos.com</a> : ";
-		jax += ("<textarea class='latexcode' readonly>"+gxyJAX+"</textarea>");
 		jax += "</li>"
 	}
 	latex += "\n\\end{enumerate}\n\\end{document}";
 	jax += "</ol>";
-	if(count>0) {
-		document.getElementById('output').value = latex;
-		document.getElementById('preview').innerHTML = jax;
-		MathJax.typeset();
-	}
-	else {
-		document.getElementById('output').value = '';
-		document.getElementById('preview').innerHTML = '';
-	}
+	document.getElementById('output').value = latex;
+	document.getElementById('preview').innerHTML = jax;
+	MathJax.typeset();
 }
