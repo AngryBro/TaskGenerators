@@ -569,12 +569,13 @@ function RandomParGraph(max) {
 		return RandomParCircle(max);
 	}
 }
-
-function Generate(count) {
-	if(count<1) {
-		document.getElementById('input').value = 1;
-		count = 1;
+function Default() {
+	var input = document.getElementById('input');
+	if(input.value < 1) {
+		input.value = 1;
 	}
+}
+function Generate(count) {
 	var task1 = "Найдите все значения параметра ";
 	var task2TEX = "$a$";
 	var task2JAX = "\\(a\\)";

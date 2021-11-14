@@ -9,14 +9,12 @@
 	<h1><a href='https://angrybro.github.io/MathTeacher/index.html'>Генераторы задач</a></h1>
 	<h3><a href="index.html">Генератор задач с параметром на идею картинки</a></h3>
 		<text><b>Количество:</b> </text>
-		<input id="input" type="number"></input><br>
+		<input id="input" type="number" onchange="Default()"></input><br>
 		<button onclick="Generate(input.value)">СГЕНЕРИРОВАТЬ</button><br>
 		<text><b>Задачи:</b></text><br><br>
 		<textarea cols=100 rows=15 class="latexcode" id="output" readonly></textarea>		
 		<br><text><b>Предпросмотр:</b></text><br>
 		<div style="width:1200px" id="preview"></div>
-		<script>
-			document.getElementById("input").value = 1;
-		</script>
+		<script>Default()</script>
 	</body>
 </html>

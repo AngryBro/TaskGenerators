@@ -26,9 +26,23 @@ function Already(set,element) {
     }
     return false;
 }
+function Default() {
+	var input = document.getElementById('input');
+	var max = document.getElementById('max');
+	if(input.value<1) {
+		input.value = 1;
+	}
+	if(max.value<2) {
+		max.value = 2;
+	}
+	if((input.value>0)*(2*max.value*max.value-max.value<=input.value)) {
+		max.value = Math.ceil((1+Math.sqrt(1+8*input.value))/4);
+	}
+}
+function DefaultMaxRoot() {
+	var max = document.getElementById('max');
+}
 function Generate(count,max) {
-	count = Math.round(count);
-	max = Math.round(max);
 	if(count>=2*max*max-max) {
 		document.getElementById('output').value = `Слишком маленькие корни или слишком большое количество`;
 	}
@@ -97,10 +111,6 @@ function Generate(count,max) {
 	document.getElementById('output').value = latex;
 	document.getElementById('preview').innerHTML = mathjax;
 	MathJax.typeset();
-	}
-    else {
-		document.getElementById('output').value = "";
-		document.getElementById('preview').innerHTML = "";
 	}
 	}
 }

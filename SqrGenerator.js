@@ -72,10 +72,17 @@ class Interval {
 		return cmd;
 	}
 }
-
+function Default() {
+	var input = document.getElementById('input');
+	if(input.value < 1) {
+		input.value = 1;
+	}
+}
 function Generate(count) {
-	count = Math.round(count);
-	if(count>0) {
+	if(count<1) {
+		count = 1;
+		document.getElementById('input').value = count;
+	}
 	var max = 10;
 	var tasks = [];
 	var tasksjax = [];
@@ -187,9 +194,4 @@ function Generate(count) {
 	document.getElementById("output").value = cmd;
 	document.getElementById("preview").innerHTML = mathjax;
 	MathJax.typeset();
-	}
-	else {
-		document.getElementById("output").value="";
-		document.getElementById("preview").innerHTML = "";
-	}
 }
