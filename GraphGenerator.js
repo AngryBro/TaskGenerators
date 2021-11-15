@@ -1,139 +1,3 @@
-class Graphs1 {
-	constructor() {
-		this.p = 0;
-		this.h = 1;
-		this.l = 2;
-		this.c = 3;
-	}
-	Line(max,sqr) {
-		var a;
-		var b;
-		var x0;
-		var y0;
-		var part1;
-		var part2;
-		x0 = Math.round(max*Math.random());
-		y0 = Math.round(max*Math.random());
-		a = Math.round(max*Math.random()-max/2);
-		b = Math.round(max*Math.random()-max/2);
-		if((sqr==1)||(sqr==4)) {
-			part1 = "("+String(a)+"*(x-"+String(x0)+")+";
-		}
-		else {
-			part1 = "("+String(a)+"*(x+" + String(x0) + ")+";
-		}
-		if((sqr==2)||(sqr==1)) {
-			part2 = "("+String(b)+")*(y-"+String(y0)+"))";
-		}
-		else {
-			part2 = "("+String(b)+")*(y+"+String(y0)+"))";
-		}
-		return part1+part2;
-	}
-	Circle(max,sqr,compiler) {
-		var x0;
-		var y0;
-		var r;
-		var part1;
-		var part2;
-		x0 = Math.round(max*Math.random());
-		y0 = Math.round(max*Math.random());
-		r = Math.round(max*Math.random()*max);
-		if((sqr==1)||(sqr==4)) {
-			if(compiler=="tex") {
-				part1 = "((x-"+String(x0)+")\\textasciicircum 2+";
-			}
-			else {
-				part1 = "((x-"+String(x0)+")^2+";
-			}
-		}
-		else {
-			if(compiler=="tex") {
-				part1 = "((x+" + String(x0) + ")\\textasciicircum 2+";
-			}
-			else {
-				part1 = "((x+" + String(x0) + ")^2+";
-			}
-		}
-		if((sqr==2)||(sqr==1)) {
-			if(compiler=="tex") {
-				part2 = "(y-"+String(y0)+")\\textasciicircum 2 -"+String(r)+")";
-			}
-			else {
-				part2 = "(y-"+String(y0)+")^2 -"+String(r)+")";
-			}
-		}
-		else {
-			if(compiler=="tex") {
-				part2 = "(y+"+String(y0)+")\\textasciicircum 2 -"+String(r)+")";
-			}
-			else {
-				part2 = "(y+"+String(y0)+")^2 -"+String(r)+")";
-			}
-		}
-		return part1+part2;
-	}
-	Hyperbole(max,sqr) {
-		var x0;
-		var y0;
-		var k;
-		k = Math.round(max*(2*(sqr%2)-1)*Math.random());
-		x0 = Math.round(max*2*Math.random()-max);
-		y0 = Math.round(max*2*Math.random()-max);
-		return "("+String(k)+"/(x-("+String(x0)+"))+("+String(y0)+")-y)";
-	}
-	Parabole(max,sqr,compiler) {
-		var x0;
-		var y0;
-		var a = 0;
-		var part1;
-		var part2;
-		while(a==0) {
-			a = Math.round(max*Math.random()-max/2);
-		}
-		x0 = Math.round(max*Math.random());
-		y0 = Math.round(max*Math.random());
-		if((sqr==1)||(sqr==4)) {
-			if(compiler=="tex") {
-				part1 = "("+String(a)+"*(x-"+String(x0)+")\\textasciicircum 2";
-			}
-			else {
-				part1 = "("+String(a)+"*(x-"+String(x0)+")^2";
-			}
-		}
-		else {
-			if(compiler=="tex") {
-				part1 = "("+String(a)+"*(x+" + String(x0) + ")\\textasciicircum 2";
-			}
-			else {
-				part1 = "("+String(a)+"*(x+" + String(x0) + ")^2";
-			}
-		}
-		if((sqr==2)||(sqr==1)) {
-			part2 = "+"+String(y0)+"-y)";
-		}
-		else {
-			part2 = "-"+String(y0)+"-y)";
-		}
-		return part1+part2;
-	}
-	Random(max,sqr,compiler) {
-		var temp = Math.round(3*Math.random());
-		if(temp == this.p) {
-			return this.Parabole(max,sqr,compiler);
-		}
-		if(temp == this.h) {
-			return this.Hyperbole(max,sqr);
-		}
-		if(temp == this.c) {
-			return this.Circle(max,sqr,compiler);
-		}
-		if(temp == this.l) {
-			return this.Line(max,sqr);
-		}
-		return 0;
-	}
-}
 class Graphs {
 	constructor() {
 		this.p = 0;
@@ -249,21 +113,26 @@ class Graphs {
 		}
 		return "y="+String(a)+"|x"+Write(x0)+"|"+y0;
 	}
-	Random(max) {
+	Random(max,maingraphs) {
 		var temp = Math.round(this.count*Math.random());
 		if(temp == this.p) {
+			maingraphs[this.p]++;
 			return this.Parabole(max);
 		}
 		if(temp == this.h) {
+			maingraphs[this.h]++;
 			return this.Hyperbole(max);
 		}
 		if(temp == this.c) {
+			maingraphs[this.c]++;
 			return this.Circle(max);
 		}
 		if(temp == this.l) {
+			maingraphs[this.l]++;
 			return this.Line(max);
 		}
 		if(temp == this.a) {
+			maingraphs[this.a]++;
 			return this.Angle(max);
 		}
 		return 0;
@@ -287,12 +156,16 @@ function Write(x) {
 		return "-"+String(-x);
 	}
 }
-function RandomGraph(max) {
+function RandomGraph(max,maingraphs) {
 	// p - parabole, h - hyperbole, l - line, c - circle, a - angle
 	var g = [];
-	var graphcount = Math.round(Math.random())+2;
+	var graphcount = Math.round(Math.random())+1;
+	if(graphcount==2) {
 	for(var i = 0; i<graphcount; i++) {
-		g.push(Graph.Random(max));
+		g.push(Graph.Random(max,maingraphs));
+	}
+	while(g[0]==g[1]) {
+		g[1] = Graph.Random(max,maingraphs);
 	}
 	var temp = `\\left[
 			\\begin{array}{l}
@@ -309,8 +182,83 @@ function RandomGraph(max) {
 			\\end{array}
 			\\right.`;
 	return temp;
+	}
+	else {
+		var x = 0;
+		var y = 0;
+		var r = 0;
+		var t = "";
+		var randgraph = Graph.Random(max,maingraphs);
+		var debug=randgraph;
+		if((maingraphs[Graph.c]>0)||(maingraphs[Graph.l]>0)||(maingraphs[Graph.a]>0)) {
+			while((x+y)==0) {
+				x = Math.round(Math.random());
+				y = Math.round(Math.random());
+				r = 0;
+			}
+		}
+		else {
+			while((x+y+r)==0) {
+				x = Math.round(Math.random());
+				y = Math.round(Math.random());
+				r = Math.round(Math.random());
+			}
+		}
+		var xpos = -1;
+		var ypos = -1;
+		var rpos = -1;
+		if(x>0) {
+			t="";
+			for(var i = 0; i<randgraph.length; i++) {
+				if(randgraph[i]=='x') {
+					xpos = i;
+				}
+			}
+			for(var i = 0; i<xpos; i++) {
+				t += randgraph[i];
+			}
+			t += "|x|";
+			for(var i = xpos+1; i<randgraph.length; i++) {
+				t += randgraph[i];
+			}
+			randgraph = t;
+		}
+		if(y>0) {
+			t="";
+			for(var i = 0; i<randgraph.length; i++) {
+				if(randgraph[i]=='y') {
+					ypos = i;
+				}
+			}
+			for(var i = 0; i<ypos; i++) {
+				t += randgraph[i];
+			}
+			t += "|y|";
+			for(var i = ypos+1; i<randgraph.length; i++) {
+				t += randgraph[i];
+			}
+			randgraph = t;
+		}
+		if(r>0) {
+			t="";
+			for(var i = 0; i<randgraph.length; i++) {
+				if(randgraph[i]=='=') {
+					rpos = i+1;
+				}
+			}
+			for(var i = 0; i<rpos; i++) {
+				t += randgraph[i];
+			}
+			t += '\\left|';
+			for(var i = rpos; i<randgraph.length; i++) {
+				t+= randgraph[i];
+			}
+			t += '\\right|';
+			randgraph = t;
+		}
+		return randgraph;
+	}
 }
-
 function RandomParCorner(max) {
 	var a;
 	var b;
@@ -378,7 +326,6 @@ function RandomParCorner(max) {
 	}
 	return "y = "+sign1+String(a)+"|x"+sign2+String(b)+"|"+sign3+String(c);
 }
-
 function RandomParCircle(max) {
 	var a;
 	var b;
@@ -435,7 +382,6 @@ function RandomParCircle(max) {
 	}
 	return "(x"+sign3+String(c)+")^2+(y"+sign2+String(b)+")^2 = "+String(a);
 }
-
 function RandomParParabole(max) {
 	var a;
 	var b;
@@ -503,7 +449,6 @@ function RandomParParabole(max) {
 	}
 	return "y = "+sign1+String(a)+"(x"+sign2+String(b)+")^2"+sign3+String(c);
 }
-
 function RandomParLine(max) {
 	var type; //0 - x=a, 1 - y=a,
 	//2 - y=kx+a, 3 - y = (a+b)(x+c)+d
@@ -553,19 +498,38 @@ function RandomParLine(max) {
 		return "y=ax"+ac+d;
 	}
 }
-
-function RandomParGraph(max) {
-	var randnumber = Math.round(Math.random()*5);
+function RandomParGraph(max,maingraphs) {
+	var maxrandnumber;
+	var pnumber;
+	var cnumber;
+	if(maingraphs[0]+maingraphs[1]>0) {
+		maxrandnumber = 4;
+		cnumber = 5;
+		pnumber = 4;
+	}
+	else {
+		if(maingraphs[3]>0) {
+			cnumber = 4;
+			pnumber = 5;
+			maxrandnumber = 4;
+		}
+		else {
+			cnumber = 5;
+			pnumber = 4;
+			maxrandnumber = 5;
+		}
+	}
+	var randnumber = Math.round(Math.random()*maxrandnumber);
 	if(randnumber<3) {
 		return RandomParLine(max);
 	}
 	if(randnumber==3) {
 		return RandomParCorner(max);
 	}
-	if(randnumber==4) {
+	if(randnumber==pnumber) {
 		return RandomParParabole(max);
 	}
-	if(randnumber==5) {
+	if(randnumber==cnumber) {
 		return RandomParCircle(max);
 	}
 }
@@ -596,6 +560,10 @@ function Generate(count) {
 	var jax = "<ol>";
 	for(var i=0; i < count; i++) {
 		var task4;
+		var maingraphs = [];
+		for(var j = 0; j<=Graph.count; j++) {
+			maingraphs.push(0);
+		}
 		var randTaskNumber;
 		var randNumberOfSolutions;
 		randNumberOfSolutions = Math.round(Math.random()*maxNumberOfSolutions);
@@ -633,13 +601,13 @@ function Generate(count) {
 		jax += task2JAX;
 		latex += task3;
 		jax += task3;
-		pargraph = RandomParGraph(10);
+		pargraph = RandomParGraph(10,maingraphs);
 		latex += "\n\\[ ";
 		jax += "\\[";
 		var temp = `
 	\\left\\{
 		\\begin{array}{l}
-			`+RandomGraph(10)+`\\\\`+
+			`+RandomGraph(10,maingraphs)+`\\\\`+
 `
 				`+pargraph+`
 		\\end{array}
