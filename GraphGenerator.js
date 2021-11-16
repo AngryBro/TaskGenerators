@@ -140,6 +140,7 @@ class Graphs {
 }
 var Graph = new Graphs();
 var maingraphs = [];
+ResetGraphs();
 function ResetGraphs() {
 	maingraphs.length = 0;
 	for(var i = 0; i<=Graph.count; i++) {
@@ -164,9 +165,8 @@ function Write(x) {
 	}
 }
 function RandomGraph(max) {
-	// p - parabole, h - hyperbole, l - line, c - circle, a - angle
+	// p - parabole, h - hyperbole, l - line, c - circle, a - angle, hp - halfparabole
 	var g = [];
-	var debug;
 	var graphcount = Math.round(Math.random())+1;
 	if(graphcount==2) {
 	g.push(Graph.Random(max));
@@ -188,7 +188,6 @@ function RandomGraph(max) {
 			\\right.`;
 	debug = "~~~~("+String(maingraphs[Graph.p]+maingraphs[Graph.h]+maingraphs[Graph.c])+")";
 	return temp;
-	//return temp+debug;
 	}
 	else {
 		var x = 0;
@@ -267,7 +266,6 @@ function RandomGraph(max) {
 			t += '\\right|';
 			randgraph = t;
 		}
-		//return randgraph+"	~~~("+debug+")";
 		return "	"+randgraph;
 	}
 }
@@ -516,14 +514,14 @@ function RandomParGraph(max) {
 	var cnumber;
 	if((maingraphs[Graph.h]>0)||(maingraphs[Graph.p]>0)) {
 		maxrandnumber = 4;
-		cnumber = 5;
+		cnumber = 10;
 		pnumber = 4;
 	}
 	else {
 		if(maingraphs[Graph.c]>0) {
 			maxrandnumber = 4;
 			cnumber = 4;
-			pnumber = 5;
+			pnumber = 10;
 		}
 		else {
 			maxrandnumber = 5;
