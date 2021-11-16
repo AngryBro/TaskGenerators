@@ -32,3 +32,26 @@ ul li {
 ol li {
 	margin: 30 20
 }
+button {
+	color: blue;
+	background-color: white;
+	border: 3px solid blue;
+	border-radius: 7px;
+	transition-duration: 0.8s;
+	font-family: courier new;
+}
+button:hover {
+	background-color: lightcyan;
+}
+button:active {
+	background-color: skyblue;
+	transition-duration: 0.1s;
+}
+textarea {
+	border: 1px solid blue;
+	border-radius: 10px;
+}
+input {
+	border: 1px solid blue;
+	border-radius: 5px;
+}
