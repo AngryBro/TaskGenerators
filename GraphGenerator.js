@@ -186,7 +186,6 @@ function RandomGraph(max) {
 	temp +=`
 			\\end{array}
 			\\right.`;
-	debug = "~~~~("+String(maingraphs[Graph.p]+maingraphs[Graph.h]+maingraphs[Graph.c])+")";
 	return temp;
 	}
 	else {
@@ -195,12 +194,11 @@ function RandomGraph(max) {
 		var r = 0;
 		var t = "";
 		var randgraph = Graph.Random(max);
-		debug = randgraph;
 		if((maingraphs[Graph.c]>0)||(maingraphs[Graph.l]>0)||(maingraphs[Graph.a]>0)) {
+			r = 0;
 			while((x+y)==0) {
 				x = Math.round(Math.random());
 				y = Math.round(Math.random());
-				r = 0;
 			}
 		}
 		else {
