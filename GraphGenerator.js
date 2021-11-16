@@ -14,8 +14,8 @@ class Graphs {
 		var y0;
 		var part1;
 		var part2;
-		x0 = Math.round(max*2*Math.random()-max);
-		y0 = Math.round(max*2*Math.random()-max);
+		x0 = Math.round(max*2*Math.random())-max;
+		y0 = Math.round(max*2*Math.random())-max;
 		a=0;
 		b=0;
 		while((a==0)&&(b==0)||(Math.abs(a)==1)||(Math.abs(b)==1)) {
@@ -32,7 +32,7 @@ class Graphs {
 			part2 = "";
 			part1 = String(a)+"(x"+Write(x0)+")=0"
 		}
-		if(a*b!=0) {
+		if((a*b)!=0) {
 			part1 = String(a)+"(x"+Write(x0)+")";
 			part2 = Write(b)+"(y"+Write(y0)+")=0";
 		}
@@ -113,7 +113,7 @@ class Graphs {
 		}
 		return "y="+String(a)+"|x"+Write(x0)+"|"+y0;
 	}
-	Random(max,maingraphs) {
+	Random(max) {
 		var temp = Math.round(this.count*Math.random());
 		if(temp == this.p) {
 			maingraphs[this.p]++;
@@ -139,6 +139,13 @@ class Graphs {
 	}
 }
 var Graph = new Graphs();
+var maingraphs = [];
+function ResetGraphs() {
+	maingraphs.length = 0;
+	for(var i = 0; i<=Graph.count; i++) {
+		maingraphs.push(0);
+	}
+}
 function Sign(x) {
 	if(x>0) {
 		return "+";
@@ -156,40 +163,40 @@ function Write(x) {
 		return "-"+String(-x);
 	}
 }
-function RandomGraph(max,maingraphs) {
+function RandomGraph(max) {
 	// p - parabole, h - hyperbole, l - line, c - circle, a - angle
 	var g = [];
+	var debug;
 	var graphcount = Math.round(Math.random())+1;
 	if(graphcount==2) {
-	for(var i = 0; i<graphcount; i++) {
-		g.push(Graph.Random(max,maingraphs));
-	}
+	g.push(Graph.Random(max));
+	g.push(g[0]);
 	while(g[0]==g[1]) {
-		g[1] = Graph.Random(max,maingraphs);
+		g[1] = Graph.Random(max);
 	}
 	var temp = `\\left[
 			\\begin{array}{l}
 `;
-	for(var i = 0; i<graphcount-1; i++) {
-		temp += "				";
-		temp += g[i];
-		temp +=`\\\\
-`;
-	}
 	temp += "				";
-	temp += g[graphcount-1];
+	temp += g[0];
+	temp +=`\\\\
+`;
+	temp += "				";
+	temp += g[1];
 	temp +=`
 			\\end{array}
 			\\right.`;
+	debug = "~~~~("+String(maingraphs[Graph.p]+maingraphs[Graph.h]+maingraphs[Graph.c])+")";
 	return temp;
+	//return temp+debug;
 	}
 	else {
 		var x = 0;
 		var y = 0;
 		var r = 0;
 		var t = "";
-		var randgraph = Graph.Random(max,maingraphs);
-		var debug=randgraph;
+		var randgraph = Graph.Random(max);
+		debug = randgraph;
 		if((maingraphs[Graph.c]>0)||(maingraphs[Graph.l]>0)||(maingraphs[Graph.a]>0)) {
 			while((x+y)==0) {
 				x = Math.round(Math.random());
@@ -214,14 +221,16 @@ function RandomGraph(max,maingraphs) {
 					xpos = i;
 				}
 			}
-			for(var i = 0; i<xpos; i++) {
-				t += randgraph[i];
+			if(xpos>=0) {
+				for(var i = 0; i<xpos; i++) {
+					t += randgraph[i];
+				}
+				t += "|x|";
+				for(var i = xpos+1; i<randgraph.length; i++) {
+					t += randgraph[i];
+				}
+				randgraph = t;
 			}
-			t += "|x|";
-			for(var i = xpos+1; i<randgraph.length; i++) {
-				t += randgraph[i];
-			}
-			randgraph = t;
 		}
 		if(y>0) {
 			t="";
@@ -230,14 +239,16 @@ function RandomGraph(max,maingraphs) {
 					ypos = i;
 				}
 			}
-			for(var i = 0; i<ypos; i++) {
-				t += randgraph[i];
+			if(ypos>=0) {
+				for(var i = 0; i<ypos; i++) {
+					t += randgraph[i];
+				}
+				t += "|y|";
+				for(var i = ypos+1; i<randgraph.length; i++) {
+					t += randgraph[i];
+				}
+				randgraph = t;
 			}
-			t += "|y|";
-			for(var i = ypos+1; i<randgraph.length; i++) {
-				t += randgraph[i];
-			}
-			randgraph = t;
 		}
 		if(r>0) {
 			t="";
@@ -256,7 +267,8 @@ function RandomGraph(max,maingraphs) {
 			t += '\\right|';
 			randgraph = t;
 		}
-		return randgraph;
+		//return randgraph+"	~~~("+debug+")";
+		return "	"+randgraph;
 	}
 }
 function RandomParCorner(max) {
@@ -498,25 +510,25 @@ function RandomParLine(max) {
 		return "y=ax"+ac+d;
 	}
 }
-function RandomParGraph(max,maingraphs) {
+function RandomParGraph(max) {
 	var maxrandnumber;
 	var pnumber;
 	var cnumber;
-	if(maingraphs[0]+maingraphs[1]>0) {
+	if((maingraphs[Graph.h]>0)||(maingraphs[Graph.p]>0)) {
 		maxrandnumber = 4;
 		cnumber = 5;
 		pnumber = 4;
 	}
 	else {
-		if(maingraphs[3]>0) {
+		if(maingraphs[Graph.c]>0) {
+			maxrandnumber = 4;
 			cnumber = 4;
 			pnumber = 5;
-			maxrandnumber = 4;
 		}
 		else {
+			maxrandnumber = 5;
 			cnumber = 5;
 			pnumber = 4;
-			maxrandnumber = 5;
 		}
 	}
 	var randnumber = Math.round(Math.random()*maxrandnumber);
@@ -560,12 +572,11 @@ function Generate(count) {
 	var jax = "<ol>";
 	for(var i=0; i < count; i++) {
 		var task4;
-		var maingraphs = [];
-		for(var j = 0; j<=Graph.count; j++) {
-			maingraphs.push(0);
-		}
 		var randTaskNumber;
 		var randNumberOfSolutions;
+		var randmaingraph = RandomGraph(10);
+		var pargraph = RandomParGraph(10);
+		ResetGraphs();
 		randNumberOfSolutions = Math.round(Math.random()*maxNumberOfSolutions);
 		if(randNumberOfSolutions == 0) {
 			randTaskNumber = 3;
@@ -601,13 +612,12 @@ function Generate(count) {
 		jax += task2JAX;
 		latex += task3;
 		jax += task3;
-		pargraph = RandomParGraph(10,maingraphs);
 		latex += "\n\\[ ";
 		jax += "\\[";
 		var temp = `
 	\\left\\{
 		\\begin{array}{l}
-			`+RandomGraph(10,maingraphs)+`\\\\`+
+			`+randmaingraph+`\\\\`+
 `
 				`+pargraph+`
 		\\end{array}
