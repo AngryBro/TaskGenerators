@@ -1,0 +1,23 @@
+<html lang="ru">
+	<head>
+		<title>Генератор задач</title>
+		
+		<link rel="stylesheet" href="style.css"></link>
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+	</head>
+	<body>
+	<h3><a href="index.html">Генератор задач с матрицами</a></h3>
+		<text><b>Количество:</b> </text>
+		<input id="input" type="number"></input><br>
+		<text><b>Тип:</b> </text><br>
+		<input id="sum" type="checkbox">Сложение матриц \(3 \times 1\)</input><br>
+		<input id="det2" type="checkbox">Определитель \(2 \times 2\)</input><br>
+		<input id="det3" type="checkbox">Определитель \(3 \times 3\)</input><br>
+		<input id="plane1" type="checkbox">Плоскость по точке и нормальному вектору</input><br>
+		<input id="plane2" type="checkbox">Плоскость по точке и направляющим векторам</input><br>
+		<button onclick="Generate(10,input.value);MathJax.typeset()">СГЕНЕРИРОВАТЬ</button><br>		
+		<br><text><b>Задачи:</b></text><br>
+		<div style="width:1200px;font-size:30" id="preview"></div>
+		<script charset="utf-8" src="MatrixGenerator.js"></script>
+	</body>
+</html>
