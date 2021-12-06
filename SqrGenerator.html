@@ -9,11 +9,13 @@
 	<h3><a href="index.html">Генератор задач с параметром на идею квадратного трёхчлена</a></h3>
 		<text><b>Количество:</b> </text>
 		<input id="input" type="number" onchange="Default()"></input><br>
-		<button onclick="Generate(input.value)">СГЕНЕРИРОВАТЬ</button><br>
+		<button onclick="Generate(input.value)">СГЕНЕРИРОВАТЬ</button>
+		<div id='tasks' hidden>
 		<text><b>Задачи:</b></text><br><br>
 		<textarea cols=100 rows=15 class="latexcode" id="output" readonly></textarea>		
 		<br><text><b>Предпросмотр:</b></text><br>
 		<div style="width:1200px" id="preview"></div>
+		</div>
 		<script>Default()</script>
 	</body>
 </html>

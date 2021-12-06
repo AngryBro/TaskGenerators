@@ -32,15 +32,15 @@ function Default() {
 	if(input.value<1) {
 		input.value = 1;
 	}
+	if(input.value>100) {
+		input.value = 100;
+	}
 	if(max.value<2) {
 		max.value = 2;
 	}
 	if((input.value>0)*(2*max.value*max.value-max.value<=input.value)) {
 		max.value = Math.ceil((1+Math.sqrt(1+8*input.value))/4);
 	}
-}
-function DefaultMaxRoot() {
-	var max = document.getElementById('max');
 }
 function Generate(count,max) {
 	if(count>=2*max*max-max) {
@@ -108,6 +108,7 @@ function Generate(count,max) {
     }
     latex += "\n\\end{enumerate}\n\\end{document}";
 	mathjax += '</ol>';
+	document.getElementById('tasks').hidden = false;
 	document.getElementById('output').value = latex;
 	document.getElementById('preview').innerHTML = mathjax;
 	MathJax.typeset();

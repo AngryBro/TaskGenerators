@@ -77,12 +77,11 @@ function Default() {
 	if(input.value < 1) {
 		input.value = 1;
 	}
+	if(input.value > 100) {
+		input.value = 100;
+	}
 }
 function Generate(count) {
-	if(count<1) {
-		count = 1;
-		document.getElementById('input').value = count;
-	}
 	var max = 10;
 	var tasks = [];
 	var tasksjax = [];
@@ -191,6 +190,7 @@ function Generate(count) {
 	}
 	cmd += "\n\\end{enumerate}\n\\end{document}";
 	mathjax += "</ol>";
+	document.getElementById('tasks').hidden = false;
 	document.getElementById("output").value = cmd;
 	document.getElementById("preview").innerHTML = mathjax;
 	MathJax.typeset();

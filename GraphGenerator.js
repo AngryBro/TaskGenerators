@@ -628,6 +628,7 @@ function Generate(count) {
 	}
 	latex += "\n\\end{enumerate}\n\\end{document}";
 	jax += "</ol>";
+	document.getElementById('tasks').hidden = false;
 	document.getElementById('output').value = latex;
 	document.getElementById('preview').innerHTML = jax;
 	MathJax.typeset();

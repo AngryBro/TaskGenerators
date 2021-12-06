@@ -54,4 +54,11 @@ textarea {
 input {
 	border: 1px solid blue;
 	border-radius: 5px;
+	font-size: 30pt;
+}
+select {
+	border: 1px solid blue;
+	border-radius: 5px;
+	font-size: 30pt;
+	font-family: courier new;
 }
