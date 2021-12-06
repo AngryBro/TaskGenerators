@@ -3,6 +3,7 @@ class Vector {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.len2 = x*x + y*y + z*z;
 	}
 	Print() {
 		var cmd = '\\begin{pmatrix} ';
@@ -28,12 +29,14 @@ class Det2 {
 	}
 }
 function Default() {
+	var min = 1;
+	var max = 20;
 	var count = document.getElementById('input');
-	if(count.value<1) {
-		count.value = 1;
+	if(count.value<min) {
+		count.value = min;
 	}
-	if(count.value>100) {
-		count.value = 100;
+	if(count.value>max) {
+		count.value = max;
 	}
 }
 function VectorSum(v1,v2) {
@@ -46,7 +49,7 @@ function VectorMul(k,v) {
 	return new Vector(k*v.x, k*v.y, k*v.z);
 }
 function VectorSkalar(v1,v2) {
-	return v1.x*v1.x+v1.y*v2.y+v1.z*v2.z;
+	return v1.x*v2.x+v1.y*v2.y+v1.z*v2.z;
 }
 function VectorLength(v) {
 	var len2 = VectorSkalar(v,v);
@@ -135,6 +138,29 @@ function PlaneGenerator1(max,count) {
 		var ans = ',~~~~\\mu:~~~'+String(n.x)+'(x'+Write(M.x,0)+')';
 		ans += Write(n.y,0)+'(y'+Write(M.y,0)+')';
 		ans += Write(n.z,0)+'(z'+Write(M.z,0)+')=0';
+		cmd += Li_(i,ans);
+	}
+	cmd += '</ol>';
+	return cmd;
+}
+function LineGenerator(max,count) {
+	var cmd = 'Составьте уравнения прямой \\(m\\), если ';
+	cmd += '\\(M \\in m \\parallel \\overrightarrow{n}\\).';
+	cmd += '<ol>\n';
+	for(var i = 0; i<count; i++) {
+		var M = RandMatrix(max);
+		var n = RandMatrix(max);
+		cmd += Li(i);
+		cmd += '\\( M = ';
+		cmd += M.Print();
+		cmd += ',~~\\overrightarrow{n} = ';
+		cmd += n.Print();
+		cmd += '\\)';
+		M = VectorSub(new Vector(0,0,0),M);
+		var ans = ',~~~~m:~~~\\displaystyle ';
+		ans += '\\frac{x'+Write(M.x,0)+'}{'+String(n.x)+'}=';
+		ans += '\\frac{y'+Write(M.y,0)+'}{'+String(n.y)+'}=';
+		ans += '\\frac{z'+Write(M.z,0)+'}{'+String(n.z)+'}';
 		cmd += Li_(i,ans);
 	}
 	cmd += '</ol>';
@@ -258,6 +284,91 @@ function RandMatrix(max) {
 	var z = Math.round(Math.random()*max*2)-max;
 	return new Vector(x,y,z);
 }
+function AngleGenerator(max,count) {
+	var cmd = 'Найдите \\(\\alpha =\\angle\\left(\\overrightarrow{m},\\overrightarrow{n}\\right)\\).';
+	cmd += '<ol>\n';
+	for(var i = 0; i<count; i++) { console.log(i);
+		var m = new Vector(0,0,0);
+		var n = new Vector(0,0,0);
+		while((m.x==0)&&(n.x==0)&&(m.y==0)&&(n.y==0)&&(n.z==0)&&(m.z==0)) {
+			m = RandMatrix(max/2);
+			n = RandMatrix(max/2);
+		}
+		cmd += Li(i);
+		cmd += '\\(';
+		cmd += '~~~\\overrightarrow{m} = ';
+		cmd += m.Print();
+		cmd += ',~~\\overrightarrow{n} = ';
+		cmd += n.Print();
+		cmd += '\\)';
+		var up = Math.abs(VectorSkalar(m,n));
+		var down2 = n.len2*m.len2;
+		var ans = ',~~~\\displaystyle \\cos{\\alpha}= '+SqrDown(up,down2);
+		cmd += Li_(i,ans);
+	}
+	cmd += '</ol>';
+	return cmd;
+}
+function NOD(a,b) {
+	var temp;
+	if(a<b) {
+		temp = a;
+		a = b;
+		b = temp;
+	}
+	while(a%b!=0) {
+		temp = b;
+		b = a%b;
+		a = temp;
+	}
+	return b;
+}
+function SqrDown(up,down2) {
+	var max = '';
+	for(i = 2;i*i<=down2; i++) {
+		if(down2%(i*i)==0) {
+			max = i;
+		}
+	}
+	if(max!='') {
+		down2 /= (max*max);
+		if(max==1) {
+			max = '';
+		}
+	}
+	if(down2==1) {
+		down2 = '';
+	}
+	else {
+		down2 = '\\sqrt{'+String(down2)+'}';
+	}
+	if((down2=='')&&(max=='')) {
+		return String(up);
+	}
+	if(up==0) {
+		return String(0);
+	}
+	return '\\frac{'+String(up)+'}{'+String(max)+down2+'}';
+}
+function PointGenerator(max,count) {
+	var cmd = 'Составить уравнение для точек \\(X,~M,~N\\), если \\(X \\in MN\\).';
+	cmd += '<ol>\n';
+	for(var i = 0; i<count; i++) { console.log(i);
+		var m = Math.round(Math.random()*max)+1;
+		var n = Math.round(Math.random()*max)+1;
+		cmd += Li(i);
+		cmd += '\\(';
+		cmd += '~~~MX:XN = ';
+		cmd += String(m)+' : ';
+		cmd += String(n)+'~~\\Rightarrow';
+		cmd += '\\)';
+		var ans = '~~~X =\\displaystyle \\frac{1}{'+String(m+n)+'}\\cdot ';
+		ans += '\\left('+String(n)+'\\cdot M'+Write(m)+'\\cdot N\\right)'
+		cmd += Li_(i,ans);
+	}
+	cmd += '</ol>';
+	return cmd;
+}
 function Generate(max,count) {
 	var list = document.getElementById('checklist');
 	document.getElementById('tasks').innerHTML = 'Задачи:';
@@ -270,11 +381,20 @@ function Generate(max,count) {
 	if(list.selectedIndex==2) {
 		document.getElementById('preview').innerHTML = Det3Generator(max,count);
 	}
-	if(list.selectedIndex==3) {
+	if(list.selectedIndex==5) {
 		document.getElementById('preview').innerHTML = PlaneGenerator1(max,count);
 	}
+	if(list.selectedIndex==3) {
+		document.getElementById('preview').innerHTML = PointGenerator(max,count);
+	}
 	if(list.selectedIndex==4) {
+		document.getElementById('preview').innerHTML = AngleGenerator(max,count);
+	}
+	if(list.selectedIndex==6) {
 		document.getElementById('preview').innerHTML = PlaneGenerator2(max,count);
+	}
+	if(list.selectedIndex==7) {
+		document.getElementById('preview').innerHTML = LineGenerator(max,count);
 	}
 }
 Default();
