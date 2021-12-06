@@ -381,14 +381,14 @@ function Generate(max,count) {
 	if(list.selectedIndex==2) {
 		document.getElementById('preview').innerHTML = Det3Generator(max,count);
 	}
-	if(list.selectedIndex==5) {
-		document.getElementById('preview').innerHTML = PlaneGenerator1(max,count);
-	}
 	if(list.selectedIndex==3) {
 		document.getElementById('preview').innerHTML = PointGenerator(max,count);
 	}
 	if(list.selectedIndex==4) {
 		document.getElementById('preview').innerHTML = AngleGenerator(max,count);
+	}
+	if(list.selectedIndex==5) {
+		document.getElementById('preview').innerHTML = PlaneGenerator1(max,count);
 	}
 	if(list.selectedIndex==6) {
 		document.getElementById('preview').innerHTML = PlaneGenerator2(max,count);
