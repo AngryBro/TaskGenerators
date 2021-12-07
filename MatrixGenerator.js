@@ -30,7 +30,7 @@ class Det2 {
 }
 function Default() {
 	var min = 1;
-	var max = 20;
+	var max = 100;
 	var count = document.getElementById('input');
 	if(count.value<min) {
 		count.value = min;
@@ -287,7 +287,7 @@ function RandMatrix(max) {
 function AngleGenerator(max,count) {
 	var cmd = 'Найдите \\(\\alpha =\\angle\\left(\\overrightarrow{m},\\overrightarrow{n}\\right)\\).';
 	cmd += '<ol>\n';
-	for(var i = 0; i<count; i++) { console.log(i);
+	for(var i = 0; i<count; i++) {
 		var m = new Vector(0,0,0);
 		var n = new Vector(0,0,0);
 		while((m.x==0)&&(n.x==0)&&(m.y==0)&&(n.y==0)&&(n.z==0)&&(m.z==0)) {
@@ -310,18 +310,19 @@ function AngleGenerator(max,count) {
 	return cmd;
 }
 function NOD(a,b) {
-	var temp;
+	var min;
 	if(a<b) {
-		temp = a;
-		a = b;
-		b = temp;
+		min = a;
 	}
-	while(a%b!=0) {
-		temp = b;
-		b = a%b;
-		a = temp;
+	else {
+		min = b;
 	}
-	return b;
+	for(var i = min; i>0; i--) {
+		if((a%i==0)&&(b%i==0)) {
+			return i;
+		}
+	}
+	return 1;
 }
 function SqrDown(up,down2) {
 	var max = '';
@@ -332,6 +333,9 @@ function SqrDown(up,down2) {
 	}
 	if(max!='') {
 		down2 /= (max*max);
+		var d = NOD(up,max);
+		up /= d;
+		max /= d;
 		if(max==1) {
 			max = '';
 		}
