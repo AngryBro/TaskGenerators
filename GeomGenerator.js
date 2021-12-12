@@ -458,29 +458,27 @@ function DistPointPoint(max,count) {
 	cmd += '</ol>';
 	return cmd;
 }
-function Generate(max,count) {
-	var n = 'На стадии разработки';
-	var list = document.getElementById('checklist');
+function Task(max,count,number) {
 	document.getElementById('tasks').innerHTML = 'Задачи:';
-	if(list.selectedIndex==0) {
+	if(number==1) {
 		document.getElementById('preview').innerHTML = AngleLineLine(max,count);
 	}
-	if(list.selectedIndex==1) {
+	if(number==2) {
 		document.getElementById('preview').innerHTML = AngleLinePlane(max,count);
 	}
-	if(list.selectedIndex==2) {
+	if(number==3) {
 		document.getElementById('preview').innerHTML = AnglePlanePlane(max,count);
 	}
-	if(list.selectedIndex==3) {
+	if(number==4) {
 		document.getElementById('preview').innerHTML = DistPointPoint(max,count);
 	}
-	if(list.selectedIndex==4) {
+	if(number==5) {
 		document.getElementById('preview').innerHTML = DistPointLine(max,count);
 	}
-	if(list.selectedIndex==5) {
+	if(number==6) {
 		document.getElementById('preview').innerHTML = DistPointPlane(max,count);
 	}
-	if(list.selectedIndex==6) {
+	if(number==7) {
 		var type = Math.round(Math.random());
 		if(type==0) {
 			document.getElementById('preview').innerHTML = DistLineLineP(max,count);
@@ -488,6 +486,16 @@ function Generate(max,count) {
 		else {
 			document.getElementById('preview').innerHTML = DistLineLineNP(max,count);
 		}
+	}
+}
+function Generate(max,count) {
+	var list = document.getElementById('checklist').selectedIndex;
+	if(list==0) {
+		var random = Math.round(Math.random()*6)+1;
+		Task(max,count,random);
+	}
+	else {
+		Task(max,count,list);
 	}
 }
 Default();
