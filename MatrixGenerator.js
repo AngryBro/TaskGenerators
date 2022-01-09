@@ -301,9 +301,13 @@ function AngleGenerator(max,count) {
 		cmd += ',~~\\overrightarrow{n} = ';
 		cmd += n.Print();
 		cmd += '\\)';
+		var minus = '';
+		if(VectorSkalar(m,n)<0) {
+			minus = '- ';
+		}
 		var up = Math.abs(VectorSkalar(m,n));
 		var down2 = n.len2*m.len2;
-		var ans = ',~~~\\displaystyle \\cos{\\alpha}= '+SqrDown(up,down2);
+		var ans = ',~~~\\displaystyle \\cos{\\alpha}= '+minus+SqrDown(up,down2);
 		cmd += Li_(i,ans);
 	}
 	cmd += '</ol>';
