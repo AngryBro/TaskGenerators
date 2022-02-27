@@ -82,7 +82,7 @@ function Li_(i,ans) {
 	cmd += '<text style="font-size:28" hidden id=\"ans'+String(i)+'\">\\(~';
 	cmd += ans;
 	cmd += '\\)</text>';
-	cmd += '\n</a></li>\n';
+	cmd += '</a></li>';
 	return cmd;
 }
 function Ans(ans) {
@@ -204,8 +204,8 @@ function SqrtString(x) {
 /*---------------------------------*/
 
 function AnglePlanePlane(max,count) {
-	var cmd = 'Найдите \\(\\angle((ABC),(DEF))\\).\n';
-	cmd += '<ol>\n';
+	var cmd = 'Найдите \\(\\angle((ABC),(DEF))\\).';
+	cmd += '<ol>';
 	for(var i = 0; i<count; i++) {
 		var A = RandMatrix(max);
 		var B = RandMatrix(max);
@@ -246,8 +246,8 @@ function AnglePlanePlane(max,count) {
 	return cmd;
 }
 function AngleLinePlane(max,count) {
-	var cmd = 'Найдите \\(\\angle(AB,(CDE))\\).\n';
-	cmd += '<ol>\n';
+	var cmd = 'Найдите \\(\\angle(AB,(CDE))\\).';
+	cmd += '<ol>';
 	for(var i = 0; i<count; i++) {
 		var A = RandMatrix(max);
 		var B = RandMatrix(max);
@@ -282,8 +282,8 @@ function AngleLinePlane(max,count) {
 	return cmd;
 }
 function AngleLineLine(max,count) {
-	var cmd = 'Найдите \\(\\angle(AB,CD)\\).\n';
-	cmd += '<ol>\n';
+	var cmd = 'Найдите \\(\\angle(AB,CD)\\).';
+	cmd += '<ol>';
 	for(var i = 0; i<count; i++) {
 		var A = RandMatrix(max);
 		var B = RandMatrix(max);
@@ -310,8 +310,8 @@ function AngleLineLine(max,count) {
 	return cmd;
 }
 function DistLineLineP(max,count) {
-	var cmd = 'Найдите \\(\\rho(AB,CD)\\).\n';
-	cmd += '<ol>\n';
+	var cmd = 'Найдите \\(\\rho(AB,CD)\\).';
+	cmd += '<ol>';
 	for(var i = 0; i<count; i++) {
 		var A = RandMatrix(max);
 		var B = RandMatrix(max);
@@ -331,7 +331,7 @@ function DistLineLineP(max,count) {
 			ans = SqrtString(sqrup);
 		}
 		else {
-			ans = '\\displaystyle\\frac{'+SqrtString(sqrup)+'}{'+SqrtString(sqrdown)+'}';
+			ans = ',~~~\\rho(AB,CD)=\\displaystyle\\frac{'+SqrtString(sqrup)+'}{'+SqrtString(sqrdown)+'}';
 		}
 		cmd += Li(i);
 		cmd+='\\(A=';
@@ -342,15 +342,15 @@ function DistLineLineP(max,count) {
 		cmd += C.Print();
 		cmd += ',~~~D=';
 		cmd += D.Print();
-		cmd += ',~~~\\rho(AB,CD)=\\)';
+		cmd += '\\)';
 		cmd += Li_(i,ans);
 	}
 	cmd += '</ol>';
 	return cmd;
 }
 function DistLineLineNP(max,count) {
-	var cmd = 'Найдите \\(\\rho(AB,CD)\\).\n';
-	cmd += '<ol>\n';
+	var cmd = 'Найдите \\(\\rho(AB,CD)\\).';
+	cmd += '<ol>';
 	for(var i = 0; i<count; i++) {
 		var A = RandMatrix(max);
 		var B = RandMatrix(max);
@@ -361,7 +361,7 @@ function DistLineLineNP(max,count) {
 		var det3 = new Det3(new Vector(0,0,0),AB,CD);
 		var n = new Vector(det3.Minor(0,0),-det3.Minor(1,0),det3.Minor(2,0));
 		var d = -n.x*B.x-n.y*B.y-n.z*B.z;
-		var ans = SqrDown(Math.abs(n.x*C.x+n.y*C.y+n.z*C.z+d),n.len2);
+		var ans = ',~~~\\rho(AB,CD)='+SqrDown(Math.abs(n.x*C.x+n.y*C.y+n.z*C.z+d),n.len2);
 		cmd += Li(i);
 		cmd+='\\(A=';
 		cmd += A.Print();
@@ -371,15 +371,15 @@ function DistLineLineNP(max,count) {
 		cmd += C.Print();
 		cmd += ',~~~D=';
 		cmd += D.Print();
-		cmd += ',~~~\\rho(AB,CD)=\\)';
+		cmd += '\\)';
 		cmd += Li_(i,ans);
 	}
 	cmd += '</ol>';
 	return cmd;
 }
 function DistPointLine(max,count) {
-	var cmd = 'Найдите \\(\\rho(A,BC)\\).\n';
-	cmd += '<ol>\n';
+	var cmd = 'Найдите \\(\\rho(A,BC)\\).';
+	cmd += '<ol>';
 	for(var i = 0; i<count; i++) {
 		var A = RandMatrix(max);
 		var B = RandMatrix(max);
@@ -393,10 +393,10 @@ function DistPointLine(max,count) {
 		sqrdown /= d;
 		var ans;
 		if(sqrdown==1) {
-			ans = SqrtString(sqrup);
+			ans = ',~~~\\rho(A,BC)='+SqrtString(sqrup);
 		}
 		else {
-			ans = '\\displaystyle\\frac{'+SqrtString(sqrup)+'}{'+SqrtString(sqrdown)+'}';
+			ans = ',~~~\\rho(A,BC)=\\displaystyle\\frac{'+SqrtString(sqrup)+'}{'+SqrtString(sqrdown)+'}';
 		}
 		cmd += Li(i);
 		cmd+='\\(A=';
@@ -405,15 +405,15 @@ function DistPointLine(max,count) {
 		cmd += B.Print();
 		cmd += ',~~~C=';
 		cmd += C.Print();
-		cmd += ',~~~\\rho(A,BC)=\\)';
+		cmd += '\\)';
 		cmd += Li_(i,ans);
 	}
 	cmd += '</ol>';
 	return cmd;
 }
 function DistPointPlane(max,count) {
-	var cmd = 'Найдите \\(\\rho(A,(BCD))\\).\n';
-	cmd += '<ol>\n';
+	var cmd = 'Найдите \\(\\rho(A,(BCD))\\).';
+	cmd += '<ol>';
 	for(var i = 0; i<count; i++) {
 		var A = RandMatrix(max);
 		var B = RandMatrix(max);
@@ -424,7 +424,7 @@ function DistPointPlane(max,count) {
 		var det3 = new Det3(new Vector(0,0,0),BC,BD);
 		var n = new Vector(det3.Minor(0,0),-det3.Minor(1,0),det3.Minor(2,0));
 		var d = -n.x*B.x-n.y*B.y-n.z*B.z;
-		var ans = SqrDown(Math.abs(n.x*A.x+n.y*A.y+n.z*A.z+d),n.len2);
+		var ans = ',~~~\\rho(A,(BCD))='+SqrDown(Math.abs(n.x*A.x+n.y*A.y+n.z*A.z+d),n.len2);
 		cmd += Li(i);
 		cmd+='\\(A=';
 		cmd += A.Print();
@@ -434,68 +434,68 @@ function DistPointPlane(max,count) {
 		cmd += C.Print();
 		cmd += ',~~~D=';
 		cmd += D.Print();
-		cmd += ',~~~\\rho(A,(BCD))=\\)';
+		cmd += '\\)';
 		cmd += Li_(i,ans);
 	}
 	cmd += '</ol>';
 	return cmd;
 }
 function DistPointPoint(max,count) {
-	var cmd = 'Найдите \\(\\rho(A,B)\\).\n';
-	cmd += '<ol>\n';
+	var cmd = 'Найдите \\(\\rho(A,B)\\).';
+	cmd += '<ol>';
 	for(var i = 0; i<count; i++) {
 		var A = RandMatrix(max);
 		var B = RandMatrix(max);
-		var ans = SqrtString(VectorSub(B,A).len2);
+		var ans = ',~~~\\rho(A,B)='+SqrtString(VectorSub(B,A).len2);
 		cmd += Li(i);
 		cmd+='\\(A=';
 		cmd += A.Print();
 		cmd += ',~~~B=';
 		cmd += B.Print();
-		cmd += ',~~~\\rho(A,B)=\\)';
+		cmd += '\\)';
 		cmd += Li_(i,ans);
 	}
 	cmd += '</ol>';
 	return cmd;
 }
-function Task(max,count,number) {
-	document.getElementById('tasks').innerHTML = 'Задачи:';
-	if(number==1) {
-		document.getElementById('preview').innerHTML = AngleLineLine(max,count);
+function RandomTask(max,count) {
+	var cmd = '<ol>';
+	var types = ['all','alp','app','ddd','ddp','ddl','dll'];
+	for(var i = 0; i<count; i++) {
+		var rnd = Math.round(Math.random()*(types.length-1));
+		var raw = Generate(max,1,types[rnd]);
+		raw = raw.replace('<ol>','');
+		raw = raw.replace('</ol>','');
+		var splited = raw.split('.');
+		var head = splited[0]+'.';
+		var content = splited[1];
+		content = content.replace('ans0','ans'+i);
+		content = content.replace('ans0','ans'+i);
+		splited = content.split('\n');
+		cmd += splited[0]+head+'<br><br>'+splited[1];
 	}
-	if(number==2) {
-		document.getElementById('preview').innerHTML = AngleLinePlane(max,count);
-	}
-	if(number==3) {
-		document.getElementById('preview').innerHTML = AnglePlanePlane(max,count);
-	}
-	if(number==4) {
-		document.getElementById('preview').innerHTML = DistPointPoint(max,count);
-	}
-	if(number==5) {
-		document.getElementById('preview').innerHTML = DistPointLine(max,count);
-	}
-	if(number==6) {
-		document.getElementById('preview').innerHTML = DistPointPlane(max,count);
-	}
-	if(number==7) {
-		var type = Math.round(Math.random());
-		if(type==0) {
-			document.getElementById('preview').innerHTML = DistLineLineP(max,count);
-		}
-		else {
-			document.getElementById('preview').innerHTML = DistLineLineNP(max,count);
-		}
-	}
+	cmd += '</ol>';
+	return cmd;
 }
-function Generate(max,count) {
-	var list = document.getElementById('checklist').selectedIndex;
-	if(list==0) {
-		var random = Math.round(Math.random()*6)+1;
-		Task(max,count,random);
-	}
-	else {
-		Task(max,count,list);
+function Generate(max,count,type) {
+	document.getElementById('tasks').innerHTML = 'Задачи:';
+	var types = ['all','alp','app','ddd','ddp','ddl','dll'];
+	switch(type) {
+		case types[0]: return AngleLineLine(max,count);
+		case types[1]: return AngleLinePlane(max,count);
+		case types[2]: return AnglePlanePlane(max,count);
+		case types[3]: return DistPointPoint(max,count);
+		case types[4]: return DistPointPlane(max,count);
+		case types[5]: return DistPointLine(max,count);
+		case types[6]: var rnd = Math.round(Math.random());
+			if(rnd) {
+				return DistLineLineP(max,count);
+			}
+			else {
+				return DistLineLineNP(max,count);
+			}
+		case 'random': return RandomTask(max,count);
+		default: return 'Непредвиденная ошибка';
 	}
 }
 Default();

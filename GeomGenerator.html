@@ -6,21 +6,21 @@
 		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 	</head>
 	<body>
-	<h3><a href="index.html">Генератор задач по аналитической геометрии</a></h3>
+	<h3><a href="index.html">Генератор задач по методу координат</a></h3>
 		<text><b>Количество: </b></text>
 		<input id="input" type="number" onchange="Default()"></input><br>
 		<text><b>Тип: </b></text>
 		<select id='checklist' size=1>
-			<option>Рандом</option>
-			<option>Угол между прямыми</option>
-			<option>Угол между прямой и плоскостью</option>
-			<option>Угол между плоскостями</option>
-			<option>Расстояние от точки до точки</option>
-			<option>Расстояние от точки до прямой</option>
-			<option>Расстояние от точки до плоскости</option>
-			<option>Расстояние от прямой до прямой</option>
+			<option value='random'>Рандом</option>
+			<option value='all'>Угол между прямыми</option>
+			<option value='alp'>Угол между прямой и плоскостью</option>
+			<option value='app'>Угол между плоскостями</option>
+			<option value='ddd'>Расстояние от точки до точки</option>
+			<option value='ddl'>Расстояние от точки до прямой</option>
+			<option value='ddp'>Расстояние от точки до плоскости</option>
+			<option value='dll'>Расстояние от прямой до прямой</option>
 		</select><br><br>
-		<button onclick="Generate(5,input.value);MathJax.typeset()">СГЕНЕРИРОВАТЬ</button><br>		
+		<button onclick="preview.innerHTML = Generate(5,input.value,checklist.value);MathJax.typeset()">СГЕНЕРИРОВАТЬ</button><br>		
 		<br><text><b id='tasks'></b></text><br>
 		<div style="width:1500px;font-size:30" id="preview"></div>
 		<script charset="utf-8" src="GeomGenerator.js"></script>
