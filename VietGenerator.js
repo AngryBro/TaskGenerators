@@ -109,7 +109,7 @@ function Generate(count,max) {
     latex += "\n\\end{enumerate}\n\\end{document}";
 	mathjax += '</ol>';
 	document.getElementById('tasks').hidden = false;
-	document.getElementById('output').value = latex;
+	//document.getElementById('output').value = latex;
 	document.getElementById('preview').innerHTML = mathjax;
 	MathJax.typeset();
 	}

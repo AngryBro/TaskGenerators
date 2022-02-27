@@ -191,7 +191,7 @@ function Generate(count) {
 	cmd += "\n\\end{enumerate}\n\\end{document}";
 	mathjax += "</ol>";
 	document.getElementById('tasks').hidden = false;
-	document.getElementById("output").value = cmd;
+	//document.getElementById("output").value = cmd;
 	document.getElementById("preview").innerHTML = mathjax;
 	MathJax.typeset();
 }
