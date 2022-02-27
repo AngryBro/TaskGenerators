@@ -375,6 +375,9 @@ function PointGenerator(max,count) {
 			ans = '\\Rightarrow~~~X = '+VectorSum(M,N).Mult(1/2).Print();
 		}
 		else {
+			var nod = NOD(n,m);
+			n /= nod;
+			m /= nod;
 			ans = '\\Rightarrow~~~X =\\displaystyle \\frac{1}{'+String(m+n)+'} ';
 			ans += VectorSum(M.Mult(n),N.Mult(m)).Print();
 		}
