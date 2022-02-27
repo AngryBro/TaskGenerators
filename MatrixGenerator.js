@@ -11,21 +11,43 @@ class Vector {
 		cmd += '\\end{pmatrix}';
 		return cmd;
 	}
-}
-class Det2 {
-	constructor(a,b,c,d) {
-		this.a = a;
-		this.b = b;
-		this.c = c;
-		this.d = d;
+	Mult(k) {
+		return new Vector(this.x*k,this.y*k,this.z*k);
 	}
-	Print() {
-		var cmd = '';
-		cmd += '\\begin{vmatrix} ';
-		cmd += this.a+' & '+this.b+' \\\\ ';
-		cmd += this.c+' & '+this.d;
-		cmd += '\\end{vmatrix}';
-		return cmd;
+	Normalise() {
+		var n = NOD(Math.abs(this.x),Math.abs(this.y));
+		n = NOD(n,Math.abs(this.z));
+		return new Vector(this.x/n,this.y/n,this.z/n);
+	}
+}
+class Matrix3 {
+	constructor(v1,v2,v3) {
+		this.v1 = v1;
+		this.v2 = v2;
+		this.v3 = v3;
+		var elems = [];
+		for(var i = 0; i<3; i++) {
+			elems.push([0,0,0]);
+		}
+		elems[0][0] = v1.x;
+		elems[0][1] = v2.x;
+		elems[0][2] = v3.x;
+		elems[1][0] = v1.y;
+		elems[1][1] = v2.y;
+		elems[1][2] = v3.y;
+		elems[2][0] = v1.z;
+		elems[2][1] = v2.z;
+		elems[2][2] = v3.z;
+		this.elems = elems;
+	}
+	multVec(v) {
+		var cords = [];
+		for(var i = 0; i<3; i++) {
+			var vec = new Vector(this.elems[i][0],
+				this.elems[i][1],this.elems[i][2]);
+			cords.push(VectorSkalar(vec,v));
+		}
+		return new Vector(cords[0],cords[1],cords[2]);
 	}
 }
 function Default() {
@@ -59,58 +81,27 @@ function VectorLength(v) {
 	}
 	return '\\sqrt{'+String(len2)+'}';
 }
-function SumGenerator(max,count) {
-	var cmd = 'Вычислите матрицу.\n';
-	cmd += '<ol>\n';
-	for(var i = 0; i<count; i++) {
-		var n = Math.round(Math.random()*max/2)+1;
-		var m = Math.round(Math.random()*max/2)+1;
-		var mat1 = RandMatrix(max/2);
-		var mat2 = RandMatrix(max/2);
-		var ans;
-		var randomsign = RandSign();
-		var mat11;
-		var mat22;
-		mat11 = VectorMul(n,mat1);
-		mat22 = VectorMul(m,mat2);
-		if(n==1) {
-			n = '';
-		}
-		else {
-			n = String(n)+'\\cdot ';
-		}
-		if(m==1) {
-			m = '';
-		}
-		else {
-			m = String(m)+'\\cdot ';
-		}
-		cmd += Li(i);
-		cmd += '\\(~~~';
-		cmd += n
-		cmd += mat1.Print();
-		cmd += randomsign;
-		cmd += m;
-		cmd += mat2.Print();
-		cmd += '=';
-		if(randomsign == '+') {
-			ans = VectorSum(mat11,mat22);
-		}
-		else {
-			ans = VectorSub(mat11,mat22);
-		}
-		cmd += '\\)';
-		cmd += Li_(i,ans.Print());
+function Sqrt(number) {
+	var maxdel = 1;
+	if(Math.sqrt(number)==Math.round(Math.sqrt(number))) {
+		return String(Math.sqrt(number));
 	}
-	cmd += '</ol>';
-	return cmd;
+	for(var i = 2; i*i<number; i++) {
+		if(number % (i*i) == 0) {
+			maxdel = i;
+		}
+	}
+	if(maxdel==1) {
+		return '\\sqrt{'+number+'}';
+	}
+	return maxdel+'\\sqrt{'+number/(maxdel*maxdel)+'}';
 }
 function Li_(i,ans) {
 	cmd = '';
 	cmd += '<text style="font-size:28" hidden id=\"ans'+String(i)+'\">\\(~';
 	cmd += ans;
 	cmd += '\\)</text>';
-	cmd += '\n</a></li>\n';
+	cmd += '</a></li>';
 	return cmd;
 }
 function Ans(ans) {
@@ -122,20 +113,21 @@ function Ans(ans) {
 	}		
 }
 function PlaneGenerator1(max,count) {
-	var cmd = 'Составьте уравнение плоскости \\(\\mu\\), если ';
-	cmd += '\\(M \\in \\mu \\perp \\overrightarrow{n}\\).';
-	cmd += '<ol>\n';
+	var cmd = 'Составьте уравнение плоскости \\(\\alpha\\), если ';
+	cmd += '\\(A \\in \\alpha \\perp \\overrightarrow{n}\\).';
+	cmd += '<ol>';
 	for(var i = 0; i<count; i++) {
 		var M = RandMatrix(max);
 		var n = RandMatrix(max);
 		cmd += Li(i);
-		cmd += '\\( M = ';
+		cmd += '\\( A = ';
 		cmd += M.Print();
 		cmd += ',~~\\overrightarrow{n} = ';
 		cmd += n.Print();
 		cmd += '\\)';
 		M = VectorSub(new Vector(0,0,0),M);
-		var ans = ',~~~~\\mu:~~~'+String(n.x)+'(x'+Write(M.x,0)+')';
+		n = n.Normalise();
+		var ans = ',~~~~\\alpha:~~~'+n.x+'(x'+Write(M.x,0)+')';
 		ans += Write(n.y,0)+'(y'+Write(M.y,0)+')';
 		ans += Write(n.z,0)+'(z'+Write(M.z,0)+')=0';
 		cmd += Li_(i,ans);
@@ -144,50 +136,103 @@ function PlaneGenerator1(max,count) {
 	return cmd;
 }
 function LineGenerator(max,count) {
-	var cmd = 'Составьте уравнения прямой \\(m\\), если ';
-	cmd += '\\(M \\in m \\parallel \\overrightarrow{n}\\).';
-	cmd += '<ol>\n';
+	var cmd = 'Составьте уравнения прямой \\(a\\), если ';
+	cmd += '\\(A \\in a \\parallel \\overrightarrow{n}\\).';
+	cmd += '<ol>';
 	for(var i = 0; i<count; i++) {
 		var M = RandMatrix(max);
-		var n = RandMatrix(max);
+		var n = new Vector(0,0,0); 
+		while(JSON.stringify(n)==JSON.stringify(new Vector(0,0,0))) {
+			n = RandMatrix(max);
+		}
 		cmd += Li(i);
-		cmd += '\\( M = ';
+		cmd += '\\( A = ';
 		cmd += M.Print();
 		cmd += ',~~\\overrightarrow{n} = ';
 		cmd += n.Print();
 		cmd += '\\)';
+		n = n.Normalise();
 		M = VectorSub(new Vector(0,0,0),M);
-		var ans = ',~~~~m:~~~\\displaystyle ';
-		ans += '\\frac{x'+Write(M.x,0)+'}{'+String(n.x)+'}=';
-		ans += '\\frac{y'+Write(M.y,0)+'}{'+String(n.y)+'}=';
-		ans += '\\frac{z'+Write(M.z,0)+'}{'+String(n.z)+'}';
+		var ans = ',~~~~a:~~~ ';
+		if(n.x*n.y*n.z!=0) {
+			ans += '\\displaystyle\\frac{x'+Write(M.x,0)+'}{'+String(n.x)+'}=';
+			ans += '\\displaystyle\\frac{y'+Write(M.y,0)+'}{'+String(n.y)+'}=';
+			ans += '\\displaystyle\\frac{z'+Write(M.z,0)+'}{'+String(n.z)+'}';
+		}
+		else {
+			if(n.y*n.z!=0) {
+				ans += '\\begin{cases}';
+				ans += 'x = '+(-M.x)+'\\\\';
+				ans += '\\displaystyle\\frac{y'+Write(M.y,0)+'}{'+String(n.y)+'}=';
+				ans += '\\displaystyle\\frac{z'+Write(M.z,0)+'}{'+String(n.z)+'}';
+				ans += '\\end{cases}';
+			}
+			else {
+			if(n.x*n.z!=0) {
+				ans += '\\begin{cases}';
+				ans += 'y = '+(-M.y)+'\\\\';
+				ans += '\\displaystyle\\frac{x'+Write(M.x,0)+'}{'+String(n.x)+'}=';
+				ans += '\\displaystyle\\frac{z'+Write(M.z,0)+'}{'+String(n.z)+'}';
+				ans += '\\end{cases}';
+			}
+			else {
+			if(n.x*n.y!=0) {
+				ans += '\\begin{cases}';
+				ans += 'z = '+(-M.z)+'\\\\';
+				ans += '\\displaystyle\\frac{x'+Write(M.x,0)+'}{'+String(n.x)+'}=';
+				ans += '\\displaystyle\\frac{y'+Write(M.y,0)+'}{'+String(n.y)+'}';
+				ans += '\\end{cases}';
+			}
+			else {
+				if((n.x==0)&&(n.y==0)) {
+					ans += '\\begin{cases}';
+					ans += 'x = '+(-M.x)+'\\\\';
+					ans += 'y = '+(-M.y);
+					ans += '\\end{cases}';
+				}
+				else {
+					if((n.x==0)&&(n.z==0)) {
+						ans += '\\begin{cases}';
+						ans += 'x = '+(-M.x)+'\\\\';
+						ans += 'z = '+(-M.z);
+						ans += '\\end{cases}';
+					}
+					else {
+						ans += '\\begin{cases}';
+						ans += 'y = '+(-M.y)+'\\\\';
+						ans += 'z = '+(-M.z);
+						ans += '\\end{cases}';
+					}
+				}
+			}}}
+		}
 		cmd += Li_(i,ans);
 	}
 	cmd += '</ol>';
 	return cmd;
 }
 function PlaneGenerator2(max,count) {
-	var cmd = 'Составьте уравнение плоскости \\(\\mu\\), если ';
-	cmd += '\\(M \\in \\mu \\parallel \\overrightarrow{m},\\overrightarrow{n}\\).';
-	cmd += '<ol>\n';
+	var cmd = 'Составьте уравнение плоскости \\(\\alpha\\), если ';
+	cmd += '\\(A \\in \\alpha \\parallel \\overrightarrow{a},\\overrightarrow{b}\\).';
+	cmd += '<ol>';
 	for(var i = 0; i<count; i++) {
 		var M = RandMatrix(max);
 		var m = RandMatrix(max);
 		var n = RandMatrix(max);
 		cmd += Li(i);
-		cmd += '\\( M = ';
+		cmd += '\\( A = ';
 		cmd += M.Print();
-		cmd += ',~~\\overrightarrow{m} = ';
+		cmd += ',~~\\overrightarrow{a} = ';
 		cmd += m.Print();
-		cmd += ',~~\\overrightarrow{n} = ';
+		cmd += ',~~\\overrightarrow{b} = ';
 		cmd += n.Print();
 		cmd += '\\)';
-		M = VectorSub(new Vector(0,0,0),M);
-		var ans = ',~~~~\\mu:~~~\\begin{vmatrix} ';
-		ans += 'x'+Write(M.x,0)+' & '+String(m.x)+' & '+String(n.x)+'\\\\';
-		ans += 'y'+Write(M.y,0)+' & '+String(m.y)+' & '+String(n.y)+'\\\\';
-		ans += 'z'+Write(M.z,0)+' & '+String(m.z)+' & '+String(n.z);
-		ans += '\\end{vmatrix} = 0';
+		var ans = ',~~~~\\alpha:~~~';
+		var norm = new Matrix3(new Vector(0,m.z,-m.y),
+			new Vector(-m.z,0,m.x),new Vector(m.y,-m.x,0)).multVec(n).Normalise();
+		ans += norm.x+'(x'+Write(-M.x,'')+')'+
+			Write(norm.y,0)+'(y'+Write(-M.y,'')+')'+
+			Write(norm.z,0)+'(z'+Write(-M.z,'')+') = 0';
 		cmd += Li_(i,ans);
 	}
 	cmd += '</ol>';
@@ -198,25 +243,6 @@ function Li(i) {
 	cmd += '<li style=\'font-size:30\'><a href=\"javascript:Ans(\'ans';
 	cmd += String(i);
 	cmd += '\')\">\n';
-	return cmd;
-}
-function Det2Generator(max,count) {
-	var cmd = 'Вычислите определитель матрицы \\(2 \\times 2\\).\n';
-	cmd += '<ol>\n';
-	for(var i = 0; i<count; i++) {
-		cmd += Li(i);
-		cmd += '\\(';
-		a = String(Math.round(Math.random()*2*max)-max);
-		b = String(Math.round(Math.random()*2*max)-max);
-		c = String(Math.round(Math.random()*2*max)-max);
-		d = String(Math.round(Math.random()*2*max)-max);
-		var ans = a*d-b*c;
-		cmd += '\\begin{vmatrix}'+a+' & '+b+'\\\\'+c+' & '+d+'\\end{vmatrix}';
-		cmd += '=';
-		cmd += '\\)';
-		cmd += Li_(i,String(ans));
-	}
-	cmd += '</ol>';
 	return cmd;
 }
 function Write(x) {
@@ -230,36 +256,6 @@ function Write(x) {
 		return '';
 	}
 	return '-'+String(-x);
-}
-function Det3Generator(max,count) {
-	var cmd = 'Вычислите определитель матрицы \\(3 \\times 3\\).\n';
-	cmd += '<ol>\n';
-	for(var i = 0; i<count; i++) {
-		cmd += Li(i);
-		cmd += '\\(';
-		a = 'x'+Write(String(Math.round(Math.random()*2*max)-max));
-		b = String(Math.round(Math.random()*2*max)-max);
-		c = String(Math.round(Math.random()*2*max)-max);
-		d = 'y'+Write(String(Math.round(Math.random()*2*max)-max));
-		e = String(Math.round(Math.random()*2*max)-max);
-		f = String(Math.round(Math.random()*2*max)-max);
-		g = 'z'+Write(String(Math.round(Math.random()*2*max)-max));
-		h = String(Math.round(Math.random()*2*max)-max);
-		i1 = String(Math.round(Math.random()*2*max)-max);
-		cmd += ('\\begin{vmatrix}'+a+' & '+b+' & '+c+'\\\\');
-		cmd += (d+' & '+e+' & '+f+'\\\\');
-		cmd += (g+' & '+h+' & '+i1+'\\end{vmatrix}');
-		cmd += '=';
-		cmd += '\\)';
-		a = Brackets(a);
-		d = Brackets(d);
-		g = Brackets(g);
-		var ans = new Det2(e,f,h,i1).Print()+'\\cdot '+a+'-'+ new Det2(b,c,h,i1).Print()+'\\cdot '+d+'+'+new Det2(b,c,e,f).Print()+'\\cdot '+g;
-		cmd += Li_(i,ans);
-	}
-	
-	cmd += '</ol>';
-	return cmd;
 }
 function Brackets(x) {
 	if(x.length>1) {
@@ -285,8 +281,8 @@ function RandMatrix(max) {
 	return new Vector(x,y,z);
 }
 function AngleGenerator(max,count) {
-	var cmd = 'Найдите \\(\\alpha =\\angle\\left(\\overrightarrow{m},\\overrightarrow{n}\\right)\\).';
-	cmd += '<ol>\n';
+	var cmd = 'Найдите \\(\\alpha =\\angle\\left(\\overrightarrow{a},\\overrightarrow{b}\\right)\\).';
+	cmd += '<ol>';
 	for(var i = 0; i<count; i++) {
 		var m = new Vector(0,0,0);
 		var n = new Vector(0,0,0);
@@ -296,9 +292,9 @@ function AngleGenerator(max,count) {
 		}
 		cmd += Li(i);
 		cmd += '\\(';
-		cmd += '~~~\\overrightarrow{m} = ';
+		cmd += '~~~\\overrightarrow{a} = ';
 		cmd += m.Print();
-		cmd += ',~~\\overrightarrow{n} = ';
+		cmd += ',~~\\overrightarrow{b} = ';
 		cmd += n.Print();
 		cmd += '\\)';
 		var minus = '';
@@ -359,50 +355,96 @@ function SqrDown(up,down2) {
 	return '\\frac{'+String(up)+'}{'+String(max)+down2+'}';
 }
 function PointGenerator(max,count) {
-	var cmd = 'Составить уравнение для точек \\(X,~M,~N\\), если \\(X \\in MN\\).';
-	cmd += '<ol>\n';
-	for(var i = 0; i<count; i++) { console.log(i);
-		var m = Math.round(Math.random()*max)+1;
-		var n = Math.round(Math.random()*max)+1;
+	var cmd = 'Найти точку \\(X\\), если \\(X \\in MN\\).';
+	cmd += '<ol>';
+	for(var i = 0; i<count; i++) {
+		var m = Math.round(Math.random()*max/2)+1;
+		var n = Math.round(Math.random()*max/2)+1;
+		var M = RandMatrix(max);
+		var N = RandMatrix(max);
 		cmd += Li(i);
 		cmd += '\\(';
-		cmd += '~~~MX:XN = ';
+		cmd += 'M = '+M.Print();
+		cmd += ',~~N = '+N.Print();
+		cmd += ',~~~MX:XN = ';
 		cmd += String(m)+' : ';
-		cmd += String(n)+'~~\\Rightarrow';
+		cmd += String(n)+'~~';
 		cmd += '\\)';
-		var ans = '~~~X =\\displaystyle \\frac{1}{'+String(m+n)+'}\\cdot ';
-		ans += '\\left('+String(n)+'\\cdot M'+Write(m)+'\\cdot N\\right)'
+		var ans;
+		if(n==m) {
+			ans = '\\Rightarrow~~~X = '+VectorSum(M,N).Mult(1/2).Print();
+		}
+		else {
+			ans = '\\Rightarrow~~~X =\\displaystyle \\frac{1}{'+String(m+n)+'} ';
+			ans += VectorSum(M.Mult(n),N.Mult(m)).Print();
+		}
 		cmd += Li_(i,ans);
 	}
 	cmd += '</ol>';
 	return cmd;
 }
-function Generate(max,count) {
-	var list = document.getElementById('checklist');
+function LenVector(max,count) {
+	var cmd = 'Найдите длину вектора \\(\\overrightarrow{m}\\).';
+	cmd += '<ol>';
+	for(var i = 0; i<count; i++) {
+		var m = RandMatrix(max);
+		cmd += Li(i);
+		cmd += '\\(\\overrightarrow{m} = ';
+		cmd += m.Print()+'\\)';
+		var ans = ',~~~\\left|\\overrightarrow{m}\\right| ='+Sqrt(m.len2);
+		cmd += Li_(i,ans);
+	}
+	cmd += '</ol>'
+	return cmd;
+}
+function ScalarVector(max,count) {
+	var cmd = 'Найдите скалярное произведение векторов \\(\\overrightarrow{a}\\) и \\(\\overrightarrow{b}\\).';
+	cmd += '<ol>';
+	for(var i = 0; i<count; i++) {
+		var a = RandMatrix(max);
+		var b = RandMatrix(max);
+		cmd += Li(i);
+		cmd += '\\(\\overrightarrow{a} = ';
+		cmd += a.Print();
+		cmd += ',~~\\overrightarrow{b} = ';
+		cmd += b.Print()+'\\)';
+		var ans = ',~~~\\overrightarrow{a}\\cdot\\overrightarrow{b} ='+VectorSkalar(a,b);
+		cmd += Li_(i,ans);
+	}
+	cmd += '</ol>';
+	return cmd;
+}
+function RandomTask(max,count) {
+	var cmd = '<ol>';
+	var types = ['point','len','scalar','angle','plane1','plane2','line'];
+	for(var i = 0; i<count; i++) {
+		var rnd = Math.round(Math.random()*(types.length-1));
+		var raw = Generate(max,1,types[rnd]);
+		raw = raw.replace('<ol>','');
+		raw = raw.replace('</ol>','');
+		var splited = raw.split('.');
+		var head = splited[0]+'.';
+		var content = splited[1];
+		content = content.replace('ans0','ans'+i);
+		content = content.replace('ans0','ans'+i);
+		splited = content.split('\n');
+		cmd += splited[0]+head+'<br><br>'+splited[1];
+	}
+	cmd += '</ol>';
+	return cmd;
+}
+function Generate(max,count,type) {
 	document.getElementById('tasks').innerHTML = 'Задачи:';
-	if(list.selectedIndex==0) {
-		document.getElementById('preview').innerHTML = SumGenerator(max,count);
-	}
-	if(list.selectedIndex==1) {
-		document.getElementById('preview').innerHTML = Det2Generator(max,count);
-	}
-	if(list.selectedIndex==2) {
-		document.getElementById('preview').innerHTML = Det3Generator(max,count);
-	}
-	if(list.selectedIndex==3) {
-		document.getElementById('preview').innerHTML = PointGenerator(max,count);
-	}
-	if(list.selectedIndex==4) {
-		document.getElementById('preview').innerHTML = AngleGenerator(max,count);
-	}
-	if(list.selectedIndex==5) {
-		document.getElementById('preview').innerHTML = PlaneGenerator1(max,count);
-	}
-	if(list.selectedIndex==6) {
-		document.getElementById('preview').innerHTML = PlaneGenerator2(max,count);
-	}
-	if(list.selectedIndex==7) {
-		document.getElementById('preview').innerHTML = LineGenerator(max,count);
+	switch(type) {
+		case 'point': return PointGenerator(max,count);
+		case 'len': return LenVector(max,count);
+		case 'scalar': return ScalarVector(max,count);
+		case 'angle': return AngleGenerator(max,count);
+		case 'plane1': return PlaneGenerator1(max,count);
+		case 'plane2': return PlaneGenerator2(max,count);
+		case 'line': return LineGenerator(max,count);
+		case 'random': return RandomTask(max,count);
+		default: return 'Непредвиденная ошибка';
 	}
 }
 Default();
