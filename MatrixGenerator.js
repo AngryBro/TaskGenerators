@@ -309,20 +309,16 @@ function AngleGenerator(max,count) {
 	cmd += '</ol>';
 	return cmd;
 }
-function NOD(a,b) {
-	var min;
-	if(a<b) {
-		min = a;
-	}
-	else {
-		min = b;
-	}
-	for(var i = min; i>0; i--) {
-		if((a%i==0)&&(b%i==0)) {
-			return i;
+function NOD(x,y) {
+	while(x*y != 0) {
+        if(Math.abs(x)<Math.abs(y)) {
+			y = y%x
+		}
+        else {
+			x = x%y
 		}
 	}
-	return 1;
+    return x+y
 }
 function SqrDown(up,down2) {
 	var max = '';
@@ -372,13 +368,13 @@ function PointGenerator(max,count) {
 		cmd += '\\)';
 		var ans;
 		if(n==m) {
-			ans = '\\Rightarrow~~~X = '+VectorSum(M,N).Mult(1/2).Print();
+			ans = ',~~~X = '+VectorSum(M,N).Mult(1/2).Print();
 		}
 		else {
 			var nod = NOD(n,m);
 			n /= nod;
 			m /= nod;
-			ans = '\\Rightarrow~~~X =\\displaystyle \\frac{1}{'+String(m+n)+'} ';
+			ans = ',~~~X =\\displaystyle \\frac{1}{'+String(m+n)+'} ';
 			ans += VectorSum(M.Mult(n),N.Mult(m)).Print();
 		}
 		cmd += Li_(i,ans);

@@ -135,20 +135,16 @@ function RandMatrix(max) {
 	var z = Math.round(Math.random()*max*2)-max;
 	return new Vector(x,y,z);
 }
-function NOD(a,b) {
-	var min;
-	if(a<b) {
-		min = a;
-	}
-	else {
-		min = b;
-	}
-	for(var i = min; i>0; i--) {
-		if((a%i==0)&&(b%i==0)) {
-			return i;
+function NOD(x,y) {
+	while(x*y != 0) {
+        if(Math.abs(x)<Math.abs(y)) {
+			y = y%x
+		}
+        else {
+			x = x%y
 		}
 	}
-	return 1;
+    return x+y
 }
 function SqrDown(up,down2) {
 	var max = '';
